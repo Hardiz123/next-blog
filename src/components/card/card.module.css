@@ -1,0 +1,91 @@
+.container {
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.imageContainer {
+  flex: 1;
+  height: 350px;
+  position: relative;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.textContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.date {
+  color: gray;
+}
+
+.category {
+  color: crimson;
+  font-weight: 500;
+}
+
+.desc {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--softTextColor);
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.desc img, 
+.desc iframe, 
+.desc video {
+  display: none; /* Hide media in card previews */
+}
+
+.desc p {
+  margin: 0;
+}
+
+.desc a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.desc ul, 
+.desc ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+/* Dark mode improvements */
+:global(.dark-theme) .desc {
+  color: #e0e0e0;
+}
+
+:global(.dark-theme) .date {
+  color: #aaa;
+}
+
+:global(.dark-theme) .category {
+  color: #ff6b81;
+}
+
+:global(.dark-theme) .link {
+  border-color: #ff6b81;
+  color: #e0e0e0;
+}
+
+.link {
+  border-bottom: 1px solid crimson;
+  width: max-content;
+  padding: 2px 0px;
+}
+
+@media screen and (max-width: 1280px) {
+  .imageContainer {
+    display: none;
+  }
+}

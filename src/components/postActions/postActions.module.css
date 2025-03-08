@@ -1,0 +1,206 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  margin: 20px 0;
+  position: relative;
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+/* Like button and count styles */
+.likesContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--softTextColor);
+  font-size: 0.9rem;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: var(--bgSoft);
+}
+
+.likeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--textColor);
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.likeButton:hover {
+  color: #ff4d6d;
+  background-color: rgba(255, 77, 109, 0.1);
+  transform: scale(1.1);
+}
+
+.likeButton.liked {
+  color: #ff4d6d;
+}
+
+.likeButton.liked:hover {
+  color: #ff3456;
+}
+
+/* Login required styles */
+.likeButton.loginRequired {
+  border-radius: 20px;
+  padding: 8px 16px;
+  background-color: rgba(52, 152, 219, 0.1);
+  border: 1px dashed rgba(52, 152, 219, 0.5);
+}
+
+.likeButton.loginRequired:hover {
+  background-color: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+  transform: translateY(-2px);
+}
+
+.loginText {
+  font-size: 0.75rem;
+  margin-left: 4px;
+  font-weight: 600;
+}
+
+.likesCount {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--textColor);
+  min-width: 60px;
+  display: flex;
+  align-items: center;
+}
+
+/* Delete button styles */
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--textColor);
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+
+.deleteButton:hover {
+  color: #ff4d6d;
+  background-color: rgba(255, 77, 109, 0.1);
+}
+
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Recent likers notification */
+.recentLikes {
+  position: absolute;
+  top: -2rem;
+  left: 0;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  animation: fadeIn 0.3s ease-in-out, fadeOut 0.3s ease-in-out 2.7s forwards;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* SSE status indicator for debugging */
+.sseStatus {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  font-size: 0.7rem;
+  padding: 3px 6px;
+  border-radius: 4px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.connected {
+  color: #4CAF50;
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.disconnected {
+  color: #FFC107;
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.connecting {
+  color: #2196F3;
+  background-color: rgba(33, 150, 243, 0.1);
+}
+
+.error {
+  color: #F44336;
+  background-color: rgba(244, 67, 54, 0.1);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  font-size: 1.2rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.warningText {
+  color: #e74c3c;
+  font-weight: 500;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgba(231, 76, 60, 0.1);
+  margin-top: 10px;
+} 

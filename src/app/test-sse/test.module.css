@@ -1,0 +1,158 @@
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.controls {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.inputGroup {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.inputGroup label {
+  min-width: 100px;
+  font-weight: 600;
+}
+
+.input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.connect {
+  background-color: #4caf50;
+  color: white;
+}
+
+.disconnect {
+  background-color: #f44336;
+  color: white;
+}
+
+.test {
+  background-color: #2196f3;
+  color: white;
+}
+
+.status {
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.connected {
+  background-color: #4caf50;
+  color: white;
+}
+
+.connecting {
+  background-color: #ff9800;
+  color: white;
+}
+
+.disconnected {
+  background-color: #9e9e9e;
+  color: white;
+}
+
+.error {
+  background-color: #f44336;
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.messages {
+  height: 500px;
+  overflow-y: auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.message {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.message.system {
+  background-color: #e3f2fd;
+  border-left: 4px solid #2196f3;
+}
+
+.message.receive {
+  background-color: #e8f5e9;
+  border-left: 4px solid #4caf50;
+}
+
+.message.send {
+  background-color: #fff8e1;
+  border-left: 4px solid #ffc107;
+}
+
+.message.error {
+  background-color: #ffebee;
+  border-left: 4px solid #f44336;
+  animation: none;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.text {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 0.9rem;
+} 

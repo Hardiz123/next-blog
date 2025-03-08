@@ -1,0 +1,527 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.editorHeader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.themeToggle {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.themeToggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.input {
+  flex: 1;
+  padding: 15px;
+  font-size: 24px;
+  border: none;
+  border-bottom: 2px solid #e1e1e1;
+  background: transparent;
+  color: #333;
+  transition: all 0.3s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #0070f3;
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+.mediaSection {
+  margin: 30px 0;
+  position: relative;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background-color: #0070f3;
+  border-radius: 2px;
+}
+
+.editor {
+  margin: 20px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+  min-height: 400px;
+  display: block;
+  width: 100%;
+}
+
+.editor :global(.ql-toolbar) {
+  border: none;
+  border-bottom: none;
+  background-color: #f8f9fa;
+  padding: 8px;
+}
+
+.editor :global(.ql-container) {
+  font-family: inherit;
+  font-size: 16px;
+  height: auto;
+  min-height: 300px;
+  border: none;
+  border-top: 1px solid #e0e0e0;
+}
+
+.editor :global(.ql-editor) {
+  min-height: 300px;
+  padding: 15px;
+  line-height: 1.6;
+}
+
+.editor :global(.ql-editor p) {
+  margin-bottom: 1em;
+}
+
+.editor :global(.ql-editor img) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em 0;
+  border-radius: 4px;
+}
+
+.editor :global(.image-url) {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  background-color: #f0f0f0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin: 4px 0 12px 0;
+  word-break: break-all;
+  border-left: 3px solid #ccc;
+}
+
+.editor :global(.dropActive) {
+  border: 2px dashed #007bff;
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.textArea {
+  min-height: 400px;
+  font-size: 16px;
+  line-height: 1.6;
+  display: block;
+  width: 100%;
+}
+
+.editorLoading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 16px;
+}
+
+.contentPreview {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.previewTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.previewContainer {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  min-height: 200px;
+}
+
+.previewContent {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.previewContent img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 10px 0;
+  display: block;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.previewPlaceholder {
+  color: #999;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.previewHelper {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: rgba(0, 112, 243, 0.1);
+  border-radius: 6px;
+  color: #0070f3;
+  font-size: 14px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.publish {
+  padding: 12px 24px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.publish:hover {
+  background-color: #0051a2;
+}
+
+.publish:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.saveAsDraft {
+  padding: 12px 24px;
+  background-color: white;
+  color: #666;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.saveAsDraft:hover {
+  background-color: #f5f5f5;
+  border-color: #ccc;
+}
+
+.uploadingContainer {
+  margin: 15px 0;
+  padding: 12px 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  max-width: 400px;
+}
+
+.uploadingContent {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.progressContainer {
+  flex: 1;
+}
+
+.progressBar {
+  width: 100%;
+  height: 6px;
+  background-color: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #0070f3;
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 100vh;
+  font-size: 18px;
+  color: #666;
+}
+
+/* Dark mode styles */
+:global(.dark-mode) .container {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .themeToggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+:global(.dark-mode) .input {
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+:global(.dark-mode) .input:focus {
+  border-color: #3291ff;
+}
+
+:global(.dark-mode) .input::placeholder {
+  color: #888;
+}
+
+:global(.dark-mode) .sectionTitle {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .contentPreview {
+  background-color: #252525;
+  border-color: #444;
+}
+
+:global(.dark-mode) .previewTitle {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .previewContainer {
+  background-color: #1a1a1a;
+  border-color: #444;
+}
+
+:global(.dark-mode) .previewContent {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .previewContent img {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global(.dark-mode) .previewHelper {
+  background-color: rgba(50, 145, 255, 0.15);
+  color: #3291ff;
+}
+
+:global(.dark-mode) .saveAsDraft {
+  background-color: #252525;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .saveAsDraft:hover {
+  background-color: #333;
+  border-color: #555;
+}
+
+:global(.dark-mode) .uploadingContainer {
+  background-color: #252525;
+  border-color: #444;
+}
+
+:global(.dark-mode) .progressBar {
+  background-color: #444;
+}
+
+:global(.dark-mode) .progressText {
+  color: #bbb;
+}
+
+:global(.dark-mode) .loading {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .editor :global(.ql-toolbar) {
+  background-color: #252525;
+  border-color: #444;
+}
+
+:global(.dark-mode) .editor :global(.ql-container) {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .editor {
+  border-color: #444;
+}
+
+:global(.dark-mode) .editor :global(.ql-picker-label),
+:global(.dark-mode) .editor :global(.ql-picker-options) {
+  color: #e0e0e0;
+  background-color: #252525;
+}
+
+:global(.dark-mode) .editor :global(.ql-picker-options) {
+  border-color: #444;
+}
+
+:global(.dark-mode) .editor :global(.ql-snow.ql-toolbar button),
+:global(.dark-mode) .editor :global(.ql-snow .ql-toolbar button) {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .editor :global(.ql-snow .ql-stroke) {
+  stroke: #e0e0e0;
+}
+
+:global(.dark-mode) .editor :global(.ql-snow .ql-fill) {
+  fill: #e0e0e0;
+}
+
+:global(.dark-mode) .editor :global(.ql-snow .ql-picker-options) {
+  background-color: #252525;
+}
+
+:global(.dark-mode) .editor :global(.image-url) {
+  background-color: #333;
+  color: #ccc;
+  border-left-color: #555;
+}
+
+/* Hide image URLs in preview */
+.previewContent :global(.image-url) {
+  display: none;
+}
+
+/* Preview image styles */
+.previewContent :global(.preview-image) {
+  max-width: 20%;
+  height: auto;
+  display: block;
+  margin: 1em 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+:global(.dark-mode) .previewContent :global(.preview-image) {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Fix Quill editor toolbar in dark mode */
+:global(.dark-mode) .editor :global(.ql-snow .ql-picker-options .ql-picker-item) {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .editor :global(.ql-snow .ql-tooltip) {
+  background-color: #252525;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+:global(.dark-mode) .editor :global(.ql-snow .ql-tooltip input[type=text]) {
+  background-color: #333;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
+/* Fix Quill editor content area */
+.editor :global(.ql-container.ql-snow) {
+  border: 1px solid #e0e0e0;
+  border-top: 0;
+}
+
+/* Fix Quill editor toolbar */
+.editor :global(.ql-toolbar.ql-snow) {
+  border: 1px solid #e0e0e0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Fix Quill editor content area */
+.editor :global(.ql-container.ql-snow) {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .editorHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .input {
+    font-size: 20px;
+    padding: 12px;
+  }
+
+  .themeToggle {
+    position: static;
+    align-self: flex-end;
+  }
+
+  .textArea {
+    min-height: 300px;
+  }
+
+  .actionButtons {
+    flex-direction: column;
+  }
+
+  .publish, .saveAsDraft {
+    width: 100%;
+  }
+} 

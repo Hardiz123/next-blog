@@ -1,0 +1,169 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 0 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalContainer {
+  background-color: var(--bg);
+  border-radius: 12px;
+  padding: 25px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+  animation: slideIn 0.3s ease-out;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--bgSoft);
+}
+
+.modalTitle {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--textColor);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.warningIcon {
+  color: #e74c3c;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: var(--softTextColor);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: var(--bgSoft);
+  color: var(--textColor);
+}
+
+.modalContent {
+  margin-bottom: 25px;
+  color: var(--textColor);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--bgSoft);
+}
+
+.cancelButton, .confirmButton {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.cancelButton {
+  background-color: var(--bgSoft);
+  color: var(--textColor);
+  border: 1px solid var(--softTextColor);
+}
+
+.cancelButton:hover {
+  background-color: #e0e0e0;
+}
+
+.confirmButton {
+  background-color: #3498db;
+  color: white;
+  border: none;
+}
+
+.confirmButton:hover {
+  background-color: #2980b9;
+}
+
+/* Danger button style */
+.danger .confirmButton {
+  background-color: #e74c3c;
+}
+
+.danger .confirmButton:hover {
+  background-color: #c0392b;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode adjustments */
+:global(.dark) .modalContainer {
+  background-color: #1e1e1e;
+}
+
+:global(.dark) .cancelButton {
+  background-color: #333;
+  border-color: #555;
+}
+
+:global(.dark) .cancelButton:hover {
+  background-color: #444;
+}
+
+/* Media queries */
+@media (max-width: 600px) {
+  .modalContainer {
+    width: 90%;
+    padding: 20px;
+  }
+  
+  .modalFooter {
+    flex-direction: column;
+  }
+  
+  .cancelButton, .confirmButton {
+    width: 100%;
+    text-align: center;
+  }
+} 

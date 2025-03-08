@@ -1,0 +1,1320 @@
+.container{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 20px;
+  padding-bottom: 50px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Improved Dark Mode Styles */
+.darkMode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+.darkMode .input,
+.darkMode .urlInput,
+.darkMode .textArea :global(.ql-container),
+.darkMode .textArea :global(.ql-editor) {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.darkMode .textArea :global(.ql-toolbar) {
+  background-color: #252525;
+  border-color: #444;
+}
+
+.darkMode .textArea :global(.ql-picker),
+.darkMode .textArea :global(.ql-stroke) {
+  color: #e0e0e0;
+  stroke: #e0e0e0;
+}
+
+.darkMode .addButton,
+.darkMode .mediaButton,
+.darkMode .categorySelector,
+.darkMode .floatingMediaButtons,
+.darkMode .categoryOption,
+.darkMode .recentUploadItem,
+.darkMode .coverPhotoButton,
+.darkMode .previewContainer {
+  background-color: #252525;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.darkMode .urlInputContainer,
+.darkMode .categoriesList,
+.darkMode .coverPhotoContainer,
+.darkMode .recentUploadsContainer {
+  background-color: #1e1e1e;
+  border-color: #444;
+}
+
+.darkMode .categoryOption:hover {
+  background-color: #333;
+}
+
+.darkMode .categoryOption.selected {
+  background-color: #333;
+  color: #fff;
+}
+
+.darkMode .previewContainer strong {
+  color: #fff;
+}
+
+.darkMode .previewHelper {
+  background-color: #252525;
+  border-color: #444;
+}
+
+.darkMode .previewPlaceholder {
+  color: #999;
+}
+
+.editorHeader {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background-color: #0070f3;
+  border-radius: 2px;
+}
+
+.darkMode .sectionTitle {
+  color: #fff;
+}
+
+.themeToggle {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s;
+  margin-right: 10px;
+}
+
+.themeToggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.darkMode .themeToggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.categoryDropdown {
+  position: relative;
+  width: 180px;
+}
+
+.categorySelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 15px;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+
+.categorySelector:hover {
+  border-color: #ccc;
+  background-color: #f5f5f5;
+}
+
+.categorySelector svg {
+  font-size: 12px;
+  margin-left: 10px;
+  color: #666;
+}
+
+.categoriesList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  overflow: hidden;
+  animation: slideDown 0.2s ease-out forwards;
+}
+
+.categoryOption {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.categoryOption:hover {
+  background-color: #f5f5f5;
+}
+
+.categoryOption.selected {
+  background-color: #f0f0f0;
+  font-weight: 500;
+}
+
+.input {
+  flex: 1;
+  padding: 15px;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  background-color: white;
+  color: #444;
+  font-size: 28px;
+  font-weight: bold;
+  transition: all 0.3s;
+  min-width: 200px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #7d7c7c;
+  box-shadow: 0 0 0 2px rgba(125, 124, 124, 0.2);
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+/* Cover Photo Styles */
+.coverPhotoSection {
+  margin-bottom: 20px;
+}
+
+.coverPhotoContainer {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+}
+
+.coverPhotoUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  text-align: center;
+}
+
+.coverPhotoButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 25px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+  width: 200px;
+  height: 120px;
+  justify-content: center;
+}
+
+.coverPhotoButton:hover {
+  border-color: #0070f3;
+  color: #0070f3;
+  background-color: rgba(0, 112, 243, 0.05);
+}
+
+.coverPhotoButton svg {
+  font-size: 28px;
+}
+
+.coverPhotoHint {
+  margin-top: 15px;
+  color: #888;
+  font-size: 14px;
+}
+
+.coverPhotoPreview {
+  position: relative;
+  max-width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.coverImage {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+.removeCoverButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.2s;
+  font-size: 16px;
+}
+
+.removeCoverButton:hover {
+  opacity: 1;
+  background-color: rgba(220, 53, 69, 0.8);
+}
+
+.coverPhotoProgress {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.mediaSection {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 15px;
+  position: relative;
+  width: 100%;
+}
+
+.mediaControls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #fff;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #444;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  z-index: 5;
+}
+
+.addButton svg {
+  font-size: 18px;
+  color: #555;
+}
+
+.addButton.active {
+  background-color: #f0f0f0;
+  color: #222;
+  border-color: #d0d0d0;
+}
+
+.addButton:hover {
+  background-color: #f9f9f9;
+  border-color: #ccc;
+  color: #222;
+}
+
+.buttonLabel {
+  display: inline-block;
+  margin-left: 5px;
+  font-weight: normal;
+}
+
+.addMenu {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  animation: slideDown 0.2s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mediaButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.mediaButton svg {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.mediaButton:hover {
+  background-color: #f5f5f5;
+}
+
+.fileLabel {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  color: inherit;
+  font-size: inherit;
+}
+
+.fileLabel span, .mediaButton span {
+  margin-top: 5px;
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: center;
+  font-weight: 500;
+  color: #666;
+}
+
+.darkMode .fileLabel span, 
+.darkMode .mediaButton span,
+.darkMode .coverPhotoHint {
+  color: #ccc;
+}
+
+.urlInputContainer {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.urlTypeIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 14px;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 10px;
+}
+
+.darkMode .urlTypeIndicator {
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.urlIcon {
+  font-size: 16px;
+  color: #666;
+}
+
+.darkMode .urlIcon {
+  color: #aaa;
+}
+
+.urlInputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.urlInput {
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  width: 100%;
+  font-size: 15px;
+  transition: all 0.3s;
+  background-color: white;
+}
+
+.urlInput:focus {
+  outline: none;
+  border-color: #7d7c7c;
+  box-shadow: 0 0 0 2px rgba(125, 124, 124, 0.15);
+}
+
+.darkMode .urlInput:focus {
+  border-color: #0070f3;
+  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.25);
+}
+
+.urlButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.insertButton, .cancelButton {
+  padding: 8px 15px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.insertButton {
+  background-color: #0070f3;
+  color: white;
+}
+
+.insertButton:hover:not(:disabled) {
+  background-color: #0060d9;
+}
+
+.insertButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.darkMode .insertButton:disabled {
+  background-color: #444;
+  color: #888;
+}
+
+.cancelButton {
+  background-color: #f0f0f0;
+  color: #555;
+}
+
+.darkMode .cancelButton {
+  background-color: #333;
+  color: #e0e0e0;
+}
+
+.cancelButton:hover {
+  background-color: #e5e5e5;
+}
+
+.darkMode .cancelButton:hover {
+  background-color: #444;
+}
+
+.imagePreviewContainer {
+  margin-top: 5px;
+  width: 100%;
+}
+
+.recentUploadsContainer {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.darkMode .recentUploadsContainer {
+  background-color: #252525;
+  border-color: #444;
+}
+
+.recentUploadsHeading {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #555;
+}
+
+.darkMode .recentUploadsHeading {
+  color: #e0e0e0;
+}
+
+.recentUploadsList {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.recentUploadItem {
+  position: relative;
+  width: 100px;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  transition: all 0.2s;
+}
+
+.recentUploadItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.recentImagePreview {
+  position: relative;
+  height: 70px;
+  overflow: hidden;
+}
+
+.recentImagePreview img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.recentUploadActions {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.recentUploadItem:hover .recentUploadActions {
+  opacity: 1;
+}
+
+.insertRecentButton, .deleteRecentButton {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+}
+
+.insertRecentButton {
+  color: #0070f3;
+}
+
+.deleteRecentButton {
+  color: #e53e3e;
+}
+
+.insertRecentButton:hover, .deleteRecentButton:hover {
+  transform: scale(1.1);
+}
+
+.imagePreview {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.previewImage {
+  object-fit: contain;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+.deleteImageButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.deleteImageButton:hover {
+  opacity: 1;
+  background-color: rgba(220, 53, 69, 0.8);
+}
+
+.uploadingContainer {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.darkMode .uploadingContainer {
+  background-color: #252525;
+  border-color: #444;
+}
+
+.uploadingContent {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: #0070f3;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.darkMode .spinner {
+  color: #3291ff;
+}
+
+.progressContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.darkMode .progressBar {
+  background-color: #444;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #0070f3;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.progressText {
+  font-size: 13px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.darkMode .progressText {
+  color: #bbb;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.editor {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+/* Content Preview Styles */
+.contentPreview {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.previewTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.previewTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background-color: #0070f3;
+  border-radius: 2px;
+}
+
+.darkMode .previewTitle {
+  color: #fff;
+}
+
+.previewContainer {
+  padding: 25px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
+  max-width: 100%;
+  overflow-x: auto;
+  min-height: 200px;
+}
+
+.previewPlaceholder {
+  color: #888;
+  text-align: center;
+  margin-top: 70px;
+  font-style: italic;
+}
+
+.previewHelper {
+  background-color: #f0f7ff;
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #0070f3;
+  border: 1px solid #cce5ff;
+}
+
+.previewHelper p {
+  margin: 0;
+}
+
+.previewContainer img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 15px 0;
+  display: block;
+}
+
+.previewContainer iframe {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 15px 0;
+  display: block;
+}
+
+.previewContainer video {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 15px 0;
+  display: block;
+}
+
+.previewContainer p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+/* ReactQuill snow theme customization */
+.textArea {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.textArea :global(.ql-toolbar) {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-color: #e0e0e0;
+  background-color: #f9f9f9;
+}
+
+.textArea :global(.ql-container) {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-color: #e0e0e0;
+  font-family: inherit;
+  font-size: inherit;
+  min-height: 300px;
+}
+
+.textArea :global(.ql-editor) {
+  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+  font-family: inherit;
+  padding: 20px;
+}
+
+.textArea :global(.ql-editor p) {
+  margin-bottom: 1em;
+}
+
+.darkMode .textArea :global(.ql-editor p),
+.darkMode .textArea :global(.ql-editor h1),
+.darkMode .textArea :global(.ql-editor h2),
+.darkMode .textArea :global(.ql-editor h3),
+.darkMode .textArea :global(.ql-editor h4),
+.darkMode .textArea :global(.ql-editor h5),
+.darkMode .textArea :global(.ql-editor h6),
+.darkMode .textArea :global(.ql-editor ul),
+.darkMode .textArea :global(.ql-editor ol),
+.darkMode .textArea :global(.ql-editor blockquote) {
+  color: #e0e0e0;
+}
+
+.textArea :global(.ql-snow .ql-picker.ql-expanded .ql-picker-options) {
+  border-color: #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.textArea :global(.youtube-embed) {
+  margin: 15px 0;
+}
+
+.textArea :global(iframe) {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 315px;
+  width: 560px;
+  max-width: 100%;
+}
+
+.textArea :global(video) {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 15px 0;
+}
+
+.textArea :global(img) {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 15px 0;
+}
+
+/* Drop indicator */
+.dropActive {
+  border: 2px dashed #0070f3 !important;
+  background-color: rgba(0, 112, 243, 0.05) !important;
+}
+
+.floatingMediaButtons {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.floatingMediaButtons button {
+  background: none;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #555;
+}
+
+.floatingMediaButtons button:hover {
+  background-color: #f5f5f5;
+  color: #222;
+}
+
+.darkMode .floatingMediaButtons {
+  background-color: #1e1e1e;
+  border-color: #444;
+}
+
+.darkMode .floatingMediaButtons button {
+  color: #e0e0e0;
+}
+
+.darkMode .floatingMediaButtons button:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+.editorLoading {
+  padding: 40px;
+  text-align: center;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  color: #666;
+}
+
+.darkMode .editorLoading {
+  background-color: #1e1e1e;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.publish {
+  flex: 1;
+  padding: 14px 24px;
+  border: none;
+  background-color: #0070f3;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(0, 112, 243, 0.2);
+  letter-spacing: 0.3px;
+}
+
+.publish:hover:not(:disabled) {
+  background-color: #0060d9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 112, 243, 0.25);
+}
+
+.publish:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 112, 243, 0.2);
+}
+
+.publish:disabled {
+  background-color: #6ab0ff;
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+.darkMode .publish {
+  background-color: #0070f3;
+}
+
+.darkMode .publish:hover:not(:disabled) {
+  background-color: #0060d9;
+}
+
+.darkMode .publish:disabled {
+  background-color: #1a4b8f;
+}
+
+.saveAsDraft {
+  padding: 14px 24px;
+  border: 2px solid #e0e0e0;
+  background-color: white;
+  color: #555;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.saveAsDraft:hover {
+  background-color: #f9f9f9;
+  border-color: #ccc;
+}
+
+.darkMode .saveAsDraft {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.darkMode .saveAsDraft:hover {
+  background-color: #252525;
+  border-color: #555;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: #555;
+  font-size: 16px;
+  font-weight: 500;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.darkMode .loading {
+  color: #e0e0e0;
+}
+
+@media screen and (max-width: 768px) {
+  .input {
+    font-size: 22px;
+    padding: 12px;
+  }
+  
+  .categorySelector {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .mediaSection {
+    gap: 10px;
+  }
+  
+  .editor {
+    margin-bottom: 15px;
+  }
+  
+  .publish, .saveAsDraft {
+    padding: 12px;
+    font-size: 15px;
+  }
+  
+  .addMenu {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  .mediaButton {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .floatingMediaButtons {
+    left: 50% !important;
+    transform: translateX(-50%);
+  }
+  
+  .recentUploadsList {
+    justify-content: center;
+  }
+  
+  .actionButtons {
+    flex-direction: column;
+  }
+  
+  .editorHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .categoryDropdown {
+    width: 100%;
+  }
+  
+  .themeToggle {
+    align-self: flex-end;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  
+  .coverPhotoButton {
+    width: 100%;
+  }
+  
+  .coverImage {
+    max-height: 200px;
+  }
+  
+  .previewContainer {
+    padding: 15px;
+  }
+}
+
+.previewContent {
+  width: 100%;
+}
+
+.previewContent img {
+  max-width: 100%;
+  height: auto;
+  margin: 15px 0;
+  border-radius: 8px;
+  display: block;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.textArea :global(.ql-editor img) {
+  max-width: 100%;
+  height: auto !important;
+  display: block;
+  margin: 15px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.textArea :global(.ql-editor img + p) {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+  padding: 5px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border-left: 3px solid #ddd;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+.darkMode .textArea :global(.ql-editor img + p) {
+  background-color: #2a2a2a;
+  color: #aaa;
+  border-left-color: #444;
+}
+
+.textArea :global(.image-url) {
+  font-family: monospace;
+  font-size: 12px;
+  background-color: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #666;
+  border-left: 3px solid #ccc;
+  display: block;
+  margin: 4px 0 8px 0;
+  white-space: normal;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.darkMode .textArea :global(.image-url) {
+  background-color: #2a2a2a;
+  color: #aaa;
+  border-left-color: #444;
+}
+
+.previewContent :global(.hidden-url) {
+  display: none;
+}
+
+/* Make sure images have proper spacing in preview */
+.previewContent img {
+  max-width: 100%;
+  height: auto !important;
+  margin: 15px 0;
+  border-radius: 8px;
+  display: block;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.darkMode .previewContent img {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #444;
+}
+
+/* Add clear styling for image in editor */
+.textArea :global(.quill-image) {
+  max-width: 100%;
+  height: auto !important;
+  margin: 10px 0;
+}
+
+/* Make the editor more spacious for better content visibility */
+.textArea :global(.ql-editor) {
+  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+  font-family: inherit;
+  padding: 20px;
+  line-height: 1.6;
+}

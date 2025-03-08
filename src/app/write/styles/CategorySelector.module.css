@@ -1,0 +1,102 @@
+.categorySelector {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.selectContainer {
+  position: relative;
+  width: 100%;
+}
+
+.select {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border: 2px solid #e1e1e1;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #444;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.3s;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.select:hover {
+  border-color: #ccc;
+}
+
+.selectArrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #666;
+  transition: transform 0.3s;
+}
+
+.selectContainer:focus-within .selectArrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.select option {
+  padding: 12px;
+  font-size: 15px;
+  background-color: #fff;
+  color: #444;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* Dark mode styles */
+:global(.dark-mode) .label {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .select {
+  background-color: #252525;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2);
+}
+
+:global(.dark-mode) .select:hover {
+  border-color: #555;
+}
+
+:global(.dark-mode) .selectArrow {
+  color: #ccc;
+}
+
+:global(.dark-mode) .select option {
+  background-color: #252525;
+  color: #e0e0e0;
+}
+
+@media screen and (max-width: 768px) {
+  .select {
+    padding: 10px;
+    font-size: 14px;
+  }
+} 

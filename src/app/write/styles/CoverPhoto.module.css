@@ -1,0 +1,217 @@
+.coverPhotoSection {
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.sectionTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background-color: #0070f3;
+  border-radius: 2px;
+}
+
+.coverPhotoContainer {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+}
+
+.coverPhotoUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  text-align: center;
+}
+
+.coverPhotoButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 25px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+  width: 200px;
+  height: 120px;
+  justify-content: center;
+}
+
+.coverPhotoButton:hover {
+  border-color: #0070f3;
+  color: #0070f3;
+  background-color: rgba(0, 112, 243, 0.05);
+}
+
+.coverPhotoButton svg {
+  font-size: 28px;
+}
+
+.coverPhotoHint {
+  margin-top: 15px;
+  color: #888;
+  font-size: 14px;
+}
+
+.coverPhotoPreview {
+  position: relative;
+  max-width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.coverImage {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+.removeCoverButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: all 0.2s;
+  font-size: 16px;
+}
+
+.removeCoverButton:hover {
+  opacity: 1;
+  background-color: rgba(220, 53, 69, 0.8);
+}
+
+.coverPhotoProgress {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.progressContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #0070f3;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.progressText {
+  font-size: 13px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.errorText {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  color: #0070f3;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Dark mode styles */
+:global(.dark-mode) .sectionTitle {
+  color: #fff;
+}
+
+:global(.dark-mode) .coverPhotoContainer {
+  background-color: #1e1e1e;
+  border-color: #444;
+}
+
+:global(.dark-mode) .coverPhotoButton {
+  color: #ccc;
+  border-color: #444;
+}
+
+:global(.dark-mode) .coverPhotoButton:hover {
+  border-color: #0070f3;
+  color: #0070f3;
+  background-color: rgba(0, 112, 243, 0.1);
+}
+
+:global(.dark-mode) .coverPhotoHint {
+  color: #888;
+}
+
+:global(.dark-mode) .progressBar {
+  background-color: #444;
+}
+
+:global(.dark-mode) .progressText {
+  color: #bbb;
+}
+
+:global(.dark-mode) .spinner {
+  color: #3291ff;
+}
+
+@media screen and (max-width: 768px) {
+  .coverPhotoButton {
+    width: 100%;
+  }
+  
+  .coverImage {
+    max-height: 200px;
+  }
+} 

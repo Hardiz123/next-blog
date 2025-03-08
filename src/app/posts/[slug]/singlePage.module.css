@@ -1,0 +1,372 @@
+.container {
+  position: relative;
+}
+
+.infoContainer {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.textContainer {
+  flex: 1;
+}
+
+.title {
+  font-size: 64px;
+  margin-bottom: 50px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.userImageContainer {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.userTextContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--softTextColor);
+}
+
+.username {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.imageContainer {
+  flex: 1;
+  height: 350px;
+  position: relative;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.content {
+  display: flex;
+  gap: 50px;
+}
+
+.post {
+  flex: 5;
+  margin-top: 60px;
+}
+
+.description p {
+  font-size: 20px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.description img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 20px 0;
+  display: block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.description iframe {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 20px 0;
+  display: block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  height: 315px;
+  width: 560px;
+  max-width: 100%;
+}
+
+.description video {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 20px 0;
+  display: block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.description h1, 
+.description h2, 
+.description h3, 
+.description h4, 
+.description h5, 
+.description h6 {
+  margin: 30px 0 20px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.description ul, 
+.description ol {
+  margin: 20px 0;
+  padding-left: 30px;
+}
+
+.description li {
+  margin-bottom: 10px;
+}
+
+.description a {
+  color: #0070f3;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.description a:hover {
+  text-decoration: underline;
+}
+
+.description blockquote {
+  border-left: 4px solid #0070f3;
+  padding-left: 20px;
+  margin: 20px 0;
+  font-style: italic;
+  color: #666;
+}
+
+/* Improved dark mode styles */
+:global(.dark-theme) .title {
+  color: #f5f5f5;
+}
+
+:global(.dark-theme) .username {
+  color: #e0e0e0;
+}
+
+:global(.dark-theme) .userTextContainer {
+  color: #ccc;
+}
+
+:global(.dark-theme) .description p,
+:global(.dark-theme) .description h1,
+:global(.dark-theme) .description h2,
+:global(.dark-theme) .description h3,
+:global(.dark-theme) .description h4,
+:global(.dark-theme) .description h5,
+:global(.dark-theme) .description h6,
+:global(.dark-theme) .description li {
+  color: #e0e0e0;
+}
+
+:global(.dark-theme) .description blockquote {
+  color: #bbb;
+  border-left-color: #0070f3;
+}
+
+:global(.dark-theme) .description a {
+  color: #3291ff;
+}
+
+:global(.dark-theme) .description img,
+:global(.dark-theme) .description iframe,
+:global(.dark-theme) .description video {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #444;
+}
+
+/* Loading States */
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+.loadingContainer {
+  width: 100%;
+  padding: 20px;
+}
+
+.loadingTitle {
+  height: 64px;
+  width: 70%;
+  margin-bottom: 50px;
+  background-color: var(--bgSoft);
+  border-radius: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+.loadingUser {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.loadingAvatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--bgSoft);
+  animation: pulse 1.5s infinite;
+}
+
+.loadingUserInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.loadingUsername {
+  width: 120px;
+  height: 20px;
+  background-color: var(--bgSoft);
+  border-radius: 5px;
+  animation: pulse 1.5s infinite;
+}
+
+.loadingDate {
+  width: 80px;
+  height: 16px;
+  background-color: var(--bgSoft);
+  border-radius: 5px;
+  animation: pulse 1.5s infinite;
+}
+
+.loadingImage {
+  height: 350px;
+  width: 100%;
+  background-color: var(--bgSoft);
+  border-radius: 10px;
+  animation: pulse 1.5s infinite;
+  margin-bottom: 50px;
+}
+
+.loadingContent {
+  margin-top: 30px;
+}
+
+.loadingLine {
+  height: 20px;
+  margin-bottom: 15px;
+  background-color: var(--bgSoft);
+  border-radius: 5px;
+  animation: pulse 1.5s infinite;
+}
+
+.loadingLine:nth-child(1) {
+  width: 100%;
+}
+
+.loadingLine:nth-child(2) {
+  width: 90%;
+}
+
+.loadingLine:nth-child(3) {
+  width: 85%;
+}
+
+.loadingLine:nth-child(4) {
+  width: 70%;
+}
+
+.loadingComments {
+  margin-top: 40px;
+}
+
+.loadingCommentsTitle {
+  height: 30px;
+  width: 150px;
+  background-color: var(--bgSoft);
+  border-radius: 5px;
+  animation: pulse 1.5s infinite;
+  margin-bottom: 20px;
+}
+
+.loadingCommentsForm {
+  height: 120px;
+  width: 100%;
+  background-color: var(--bgSoft);
+  border-radius: 10px;
+  animation: pulse 1.5s infinite;
+  margin-bottom: 30px;
+}
+
+.loadingCommentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.loadingComment {
+  height: 100px;
+  width: 100%;
+  background-color: var(--bgSoft);
+  border-radius: 10px;
+  animation: pulse 1.5s infinite;
+}
+
+@media screen and (max-width: 1536px) {
+  .title {
+    font-size: 54px;
+  }
+  .loadingTitle {
+    height: 54px;
+  }
+}
+@media screen and (max-width: 1280px) {
+  .title {
+    font-size: 48px;
+  }
+  .loadingTitle {
+    height: 48px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .imageContainer {
+    display: none;
+  }
+  .loadingImage {
+    display: none;
+  }
+}
+@media screen and (max-width: 640px) {
+  .title {
+    font-size: 36px;
+  }
+  .loadingTitle {
+    height: 36px;
+  }
+  .description p {
+    font-size: 18px;
+  }
+  .loadingLine {
+    height: 18px;
+  }
+}
+
+/* Hide image URLs in published posts */
+.description :global(.image-url),
+.description :global(.hidden-url) {
+  display: none;
+}
+
+/* Ensure proper image styling in posts */
+.description img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 20px 0;
+  display: block;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+:global(.dark-theme) .description img {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #444;
+}

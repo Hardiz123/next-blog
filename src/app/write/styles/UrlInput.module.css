@@ -1,0 +1,140 @@
+.urlInputContainer {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  width: 300px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  animation: slideDown 0.2s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.urlForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.urlInputField {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #e1e1e1;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #444;
+  transition: all 0.3s;
+  background-color: #fff;
+}
+
+.urlInputField:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.urlInputField::placeholder {
+  color: #999;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.button {
+  padding: 8px 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+
+.cancelButton {
+  composes: button;
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.cancelButton:hover {
+  background-color: #e5e5e5;
+}
+
+.submitButton {
+  composes: button;
+  background-color: #007bff;
+  color: white;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+.submitButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: -8px;
+}
+
+/* Dark mode styles */
+:global(.dark-mode) .urlInputContainer {
+  background-color: #252525;
+  border-color: #444;
+}
+
+:global(.dark-mode) .urlInputField {
+  background-color: #333;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .urlInputField:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2);
+}
+
+:global(.dark-mode) .urlInputField::placeholder {
+  color: #888;
+}
+
+:global(.dark-mode) .cancelButton {
+  background-color: #333;
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .cancelButton:hover {
+  background-color: #444;
+}
+
+:global(.dark-mode) .submitButton {
+  background-color: #0d6efd;
+}
+
+:global(.dark-mode) .submitButton:hover {
+  background-color: #0b5ed7;
+}
+
+:global(.dark-mode) .submitButton:disabled {
+  background-color: #444;
+}
+
+@media screen and (max-width: 768px) {
+  .urlInputContainer {
+    width: 100%;
+  }
+} 

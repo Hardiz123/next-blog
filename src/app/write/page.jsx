@@ -67,6 +67,47 @@ const WritePage = () => {
     handleDelete
   } = useMediaUpload();
 
+  // Handle image selection
+  const handleImageSelect = useCallback(async (file) => {
+    if (!file || !quillRef.current || !editorLoaded) {
+      console.error('Cannot upload image: editor not ready or no file selected');
+      return;
+    }
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Only image files are supported');
+      return;
+    }
+    
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size should be less than 5MB');
+      return;
+    }
+    
+    try {
+      // Show loading toast
+      const loadingToast = toast.loading('Uploading image...');
+      
+      const imageUrl = await handleUpload(file);
+      
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+      
+      if (imageUrl) {
+        insertImageAtCursor(imageUrl);
+        setShowMediaMenu(false);
+        toast.success('Image inserted successfully!');
+      } else {
+        toast.error('Failed to upload image. Please try again.');
+      }
+    } catch (error) {
+      toast.error("Failed to upload image. Please try again.");
+      console.error("Image upload error:", error);
+    }
+  }, [quillRef, editorLoaded, handleUpload, insertImageAtCursor, setShowMediaMenu]);
+
   // Fix for addRange error
   useEffect(() => {
     // Wait for the editor to be fully mounted
@@ -128,47 +169,6 @@ const WritePage = () => {
       handleImageSelect(file);
     }
   };
-
-  // Handle image selection
-  const handleImageSelect = useCallback(async (file) => {
-    if (!file || !quillRef.current || !editorLoaded) {
-      console.error('Cannot upload image: editor not ready or no file selected');
-      return;
-    }
-    
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Only image files are supported');
-      return;
-    }
-    
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image size should be less than 5MB');
-      return;
-    }
-    
-    try {
-      // Show loading toast
-      const loadingToast = toast.loading('Uploading image...');
-      
-      const imageUrl = await handleUpload(file);
-      
-      // Dismiss loading toast
-      toast.dismiss(loadingToast);
-      
-      if (imageUrl) {
-        insertImageAtCursor(imageUrl);
-        setShowMediaMenu(false);
-        toast.success('Image inserted successfully!');
-      } else {
-        toast.error('Failed to upload image. Please try again.');
-      }
-    } catch (error) {
-      toast.error("Failed to upload image. Please try again.");
-      console.error("Image upload error:", error);
-    }
-  }, [quillRef, editorLoaded, handleUpload, insertImageAtCursor, setShowMediaMenu]);
 
   // Handle URL submission
   const handleUrlSubmit = (url) => {

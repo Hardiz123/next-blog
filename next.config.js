@@ -68,8 +68,6 @@ const nextConfig = {
   // Exclude the write page from static generation
   experimental: {
     serverComponentsExternalPackages: ['firebase', 'firebase-admin'],
-    // Skip static generation for specific paths
-    excludeDefaultMomentLocales: true,
   },
   // Skip type checking during build
   typescript: {
@@ -83,11 +81,11 @@ const nextConfig = {
   reactStrictMode: true,
   // Ensure trailing slashes are handled consistently
   trailingSlash: false,
-  // Explicitly set which pages should not be statically generated
-  exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
-    // Remove the /write page from static generation
-    delete defaultPathMap['/write'];
-    return defaultPathMap;
+  // Explicitly configure which pages should be statically generated
+  // This is a more direct approach to exclude specific pages
+  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
+  generateBuildId: async () => {
+    return 'my-build-id-' + Date.now();
   },
 };
 

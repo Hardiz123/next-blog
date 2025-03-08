@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaSpinner, FaSun, FaMoon } from "react-icons/fa";
@@ -25,10 +25,10 @@ const ReactQuill = dynamic(() => {
     // Only import CSS on client side
     require('react-quill/dist/quill.snow.css');
   }
-  return import('react-quill');
+  return import('react-quill').then(mod => mod.default);
 }, { 
   ssr: false,
-  loading: () => <p>Loading editor...</p>
+  loading: () => <div className={styles.loading}>Loading editor...</div>
 });
 
 const WritePage = () => {
@@ -39,6 +39,7 @@ const WritePage = () => {
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [showMediaMenu, setShowMediaMenu] = useState(false);
   const [urlError, setUrlError] = useState("");
+  const [editorLoaded, setEditorLoaded] = useState(false);
 
   // Initialize custom hooks
   const { 
@@ -69,7 +70,7 @@ const WritePage = () => {
   // Fix for addRange error
   useEffect(() => {
     // Wait for the editor to be fully mounted
-    if (quillRef.current) {
+    if (quillRef.current && editorLoaded) {
       // Give the editor a moment to initialize
       const timer = setTimeout(() => {
         try {
@@ -83,7 +84,7 @@ const WritePage = () => {
       
       return () => clearTimeout(timer);
     }
-  }, [quillRef]);
+  }, [quillRef, editorLoaded]);
 
   // Check for dark mode preference on mount
   useEffect(() => {
@@ -105,6 +106,8 @@ const WritePage = () => {
 
   // Listen for image drop events from the editor
   useEffect(() => {
+    if (!editorLoaded) return;
+    
     const handleEditorImageDrop = (event) => {
       const { file } = event.detail;
       if (file) {
@@ -116,7 +119,7 @@ const WritePage = () => {
     return () => {
       document.removeEventListener('editor-image-drop', handleEditorImageDrop);
     };
-  }, []);
+  }, [editorLoaded, handleImageSelect]);
 
   // Handle file input change
   const handleFileInputChange = (e) => {
@@ -127,8 +130,11 @@ const WritePage = () => {
   };
 
   // Handle image selection
-  const handleImageSelect = async (file) => {
-    if (!file) return;
+  const handleImageSelect = useCallback(async (file) => {
+    if (!file || !quillRef.current || !editorLoaded) {
+      console.error('Cannot upload image: editor not ready or no file selected');
+      return;
+    }
     
     // Validate file type
     if (!file.type.startsWith('image/')) {
@@ -162,11 +168,11 @@ const WritePage = () => {
       toast.error("Failed to upload image. Please try again.");
       console.error("Image upload error:", error);
     }
-  };
+  }, [quillRef, editorLoaded, handleUpload, insertImageAtCursor, setShowMediaMenu]);
 
   // Handle URL submission
   const handleUrlSubmit = (url) => {
-    if (!url) return;
+    if (!url || !quillRef.current) return;
     
     if (!validateUrl(url)) {
       setUrlError("Please enter a valid URL");
@@ -180,7 +186,7 @@ const WritePage = () => {
 
   // Handle recent upload insertion
   const handleInsertRecentUpload = (url) => {
-    if (url) {
+    if (url && quillRef.current) {
       insertImageAtCursor(url);
     }
   };
@@ -214,7 +220,9 @@ const WritePage = () => {
       ],
       handlers: {
         'image': function() {
-          fileInputRef.current?.click();
+          if (fileInputRef.current) {
+            fileInputRef.current.click();
+          }
         }
       }
     },
@@ -328,6 +336,10 @@ const WritePage = () => {
           formats={formats}
           placeholder="Write your story..."
           preserveWhitespace={true}
+          onReady={() => {
+            console.log('Editor is ready');
+            setEditorLoaded(true);
+          }}
         />
     
 

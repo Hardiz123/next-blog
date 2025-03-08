@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef, useState, useEffect, useMemo, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaSpinner, FaSun, FaMoon } from "react-icons/fa";
 import toast from "react-hot-toast";
-import dynamic from "next/dynamic";
+import { useTheme } from "next-themes";
 
 import styles from "./styles/WritePage.module.css";
 import CoverPhoto from "./components/CoverPhoto";
@@ -13,23 +13,11 @@ import MediaControls from "./components/MediaControls";
 import UrlInput from "./components/UrlInput";
 import RecentUploads from "./components/RecentUploads";
 import CategorySelector from "./components/CategorySelector";
+import TipTapEditor from "./components/TipTapEditor";
 
 import { usePost } from "./hooks/usePost";
-import { useEditor } from "./hooks/useEditor";
 import { useMediaUpload } from "./hooks/useMediaUpload";
-import { validateUrl } from "./utils/helpers";
-
-// Dynamically import ReactQuill with SSR disabled
-const ReactQuill = dynamic(() => {
-  if (typeof window !== 'undefined') {
-    // Only import CSS on client side
-    require('react-quill/dist/quill.snow.css');
-  }
-  return import('react-quill').then(mod => mod.default);
-}, { 
-  ssr: false,
-  loading: () => <div className={styles.loading}>Loading editor...</div>
-});
+import { validateUrl } from "./utils/validation";
 
 const WritePage = () => {
   const { status } = useSession();
@@ -40,6 +28,8 @@ const WritePage = () => {
   const [showMediaMenu, setShowMediaMenu] = useState(false);
   const [urlError, setUrlError] = useState("");
   const [editorLoaded, setEditorLoaded] = useState(false);
+  const [editorInstance, setEditorInstance] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   // Initialize custom hooks
   const { 
@@ -53,12 +43,6 @@ const WritePage = () => {
   } = usePost();
 
   const {
-    quillRef,
-    insertImageAtCursor,
-    insertUrlAtCursor
-  } = useEditor();
-
-  const {
     isUploading,
     uploadProgress,
     uploadError,
@@ -67,65 +51,12 @@ const WritePage = () => {
     handleDelete
   } = useMediaUpload();
 
-  // Handle image selection
-  const handleImageSelect = useCallback(async (file) => {
-    if (!file || !quillRef.current || !editorLoaded) {
-      console.error('Cannot upload image: editor not ready or no file selected');
-      return;
-    }
-    
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Only image files are supported');
-      return;
-    }
-    
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image size should be less than 5MB');
-      return;
-    }
-    
-    try {
-      // Show loading toast
-      const loadingToast = toast.loading('Uploading image...');
-      
-      const imageUrl = await handleUpload(file);
-      
-      // Dismiss loading toast
-      toast.dismiss(loadingToast);
-      
-      if (imageUrl) {
-        insertImageAtCursor(imageUrl);
-        setShowMediaMenu(false);
-        toast.success('Image inserted successfully!');
-      } else {
-        toast.error('Failed to upload image. Please try again.');
-      }
-    } catch (error) {
-      toast.error("Failed to upload image. Please try again.");
-      console.error("Image upload error:", error);
-    }
-  }, [quillRef, editorLoaded, handleUpload, insertImageAtCursor, setShowMediaMenu]);
-
-  // Fix for addRange error
-  useEffect(() => {
-    // Wait for the editor to be fully mounted
-    if (quillRef.current && editorLoaded) {
-      // Give the editor a moment to initialize
-      const timer = setTimeout(() => {
-        try {
-          const editor = quillRef.current.getEditor();
-          // Set initial selection to prevent addRange errors
-          editor.setSelection(0, 0);
-        } catch (error) {
-          console.error("Error initializing editor:", error);
-        }
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [quillRef, editorLoaded]);
+  // Handle editor ready event
+  const handleEditorReady = (editor) => {
+    console.log('Editor is ready');
+    setEditorLoaded(true);
+    setEditorInstance(editor);
+  };
 
   // Check for dark mode preference on mount
   useEffect(() => {
@@ -145,49 +76,127 @@ const WritePage = () => {
     }
   }, [status, router]);
 
-  // Listen for image drop events from the editor
-  useEffect(() => {
-    if (!editorLoaded) return;
-    
-    const handleEditorImageDrop = (event) => {
-      const { file } = event.detail;
-      if (file) {
-        handleImageSelect(file);
-      }
-    };
-
-    document.addEventListener('editor-image-drop', handleEditorImageDrop);
-    return () => {
-      document.removeEventListener('editor-image-drop', handleEditorImageDrop);
-    };
-  }, [editorLoaded, handleImageSelect]);
-
   // Handle file input change
   const handleFileInputChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
+    console.log('File input change detected');
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      console.log('File selected:', file.name);
       handleImageSelect(file);
+    }
+  };
+
+  // Handle image selection
+  const handleImageSelect = async (file) => {
+    try {
+      if (!file) {
+        console.error('No file provided');
+        return;
+      }
+      
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Only image files are supported');
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size should be less than 5MB');
+        return;
+      }
+      
+      const imageUrl = await handleUpload(file);
+      
+      if (imageUrl) {
+        console.log('Image uploaded successfully:', imageUrl);
+        
+        // Insert image into editor
+        if (window.tiptapEditor && window.tiptapEditor.isReady) {
+          window.tiptapEditor.insertImage(imageUrl);
+        } else {
+          console.error('Editor is not ready for image insertion');
+        }
+        
+        setShowMediaMenu(false);
+      } else {
+        console.error('Failed to upload image');
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('Failed to upload image. Please try again.');
     }
   };
 
   // Handle URL submission
   const handleUrlSubmit = (url) => {
-    if (!url || !quillRef.current) return;
+    console.log('URL submitted:', url);
     
-    if (!validateUrl(url)) {
-      setUrlError("Please enter a valid URL");
+    if (!url) {
+      setUrlError('Please enter a URL');
       return;
     }
     
-    insertUrlAtCursor(url);
+    if (!validateUrl(url)) {
+      setUrlError('Please enter a valid URL');
+      return;
+    }
+    
+    // Clear error
+    setUrlError('');
+    
+    // Check if URL is an image
+    const isImage = /\.(jpeg|jpg|gif|png|webp)$/i.test(url);
+    
+    if (isImage) {
+      // Insert image into editor
+      if (window.tiptapEditor && window.tiptapEditor.isReady) {
+        window.tiptapEditor.insertImage(url);
+        
+        // Add to recent uploads
+        setRecentUploads((prev) => [
+          { id: Date.now(), url },
+          ...(prev || []),
+        ]);
+        
+        toast.success('Image inserted successfully!');
+      } else {
+        console.error('Editor is not ready for image insertion');
+        toast.error('Editor not ready. Please try again.');
+      }
+    } else {
+      // Insert link into editor
+      if (window.tiptapEditor && window.tiptapEditor.isReady) {
+        window.tiptapEditor.insertLink(url);
+        toast.success('Link inserted successfully!');
+      } else {
+        console.error('Editor is not ready for link insertion');
+        toast.error('Editor not ready. Please try again.');
+      }
+    }
+    
+    // Hide URL input
     setShowUrlInput(false);
-    setUrlError("");
   };
 
   // Handle recent upload insertion
   const handleInsertRecentUpload = (url) => {
-    if (url && quillRef.current) {
-      insertImageAtCursor(url);
+    if (!url) {
+      console.error('Cannot insert image: No URL provided');
+      return;
+    }
+    
+    if (!editorLoaded || !editorInstance) {
+      console.error('Cannot insert image: Editor is not fully loaded');
+      return;
+    }
+    
+    // Use the window.addImage function exposed by TipTapEditor
+    if (window.addImage) {
+      window.addImage(url);
+      toast.success('Image inserted successfully!');
+    } else {
+      toast.error('Editor not ready. Please try again.');
     }
   };
 
@@ -203,44 +212,6 @@ const WritePage = () => {
       document.body.classList.remove('dark-mode');
     }
   };
-
-  // Configure Quill modules
-  const modules = useMemo(
-    () => ({
-    toolbar: {
-      container: [
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-        ['bold', 'italic', 'underline', 'strike'],
-        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-        [{ 'color': [] }, { 'background': [] }],
-        [{ 'align': [] }],
-        ['blockquote', 'code-block'],
-        ['link', 'image'],
-        ['clean']
-      ],
-      handlers: {
-        'image': function() {
-          if (fileInputRef.current) {
-            fileInputRef.current.click();
-          }
-        }
-      }
-    },
-    clipboard: {
-      matchVisual: false
-    }
-  }), []);
-
-  // Configure Quill formats
-  const formats = [
-    'header',
-    'bold', 'italic', 'underline', 'strike',
-    'list', 'bullet',
-    'color', 'background',
-    'align',
-    'blockquote', 'code-block',
-    'link', 'image'
-  ];
 
   if (status === "loading") {
     return (
@@ -261,14 +232,23 @@ const WritePage = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <button 
-          className={styles.themeToggle} 
-          onClick={toggleThemeMode}
-          aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-          title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-        >
-          {isDarkMode ? <FaSun /> : <FaMoon />}
-        </button>
+        <div className={styles.headerButtons}>
+          <button 
+            className={styles.previewToggle} 
+            onClick={() => setShowPreview(!showPreview)}
+            title={showPreview ? "Edit mode" : "Preview mode"}
+          >
+            {showPreview ? "Edit" : "Preview"}
+          </button>
+          <button 
+            className={styles.themeToggle} 
+            onClick={toggleThemeMode}
+            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+          >
+            {isDarkMode ? <FaSun /> : <FaMoon />}
+          </button>
+        </div>
       </div>
       
       <CoverPhoto 
@@ -279,70 +259,97 @@ const WritePage = () => {
       <div className={styles.mediaSection}>
         <h2 className={styles.sectionTitle}>Content</h2>
         
-        <MediaControls 
-          onImageClick={() => fileInputRef.current?.click()}
-          onUrlClick={() => {
-            setShowUrlInput(true);
-            setShowMediaMenu(false);
-          }}
-          showMenu={showMediaMenu}
-          setShowMenu={setShowMediaMenu}
-        />
-        
-        {showUrlInput && (
-          <UrlInput 
-            onSubmit={handleUrlSubmit}
-            onCancel={() => {
-              setShowUrlInput(false);
-              setUrlError("");
-            }}
-            error={urlError}
-          />
-        )}
-        
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileInputChange}
-          accept="image/*"
-          style={{ display: 'none' }}
-        />
+        {!showPreview && (
+          <>
+            <MediaControls 
+              onImageClick={() => {
+                console.log('MediaControls onImageClick called');
+                console.log('fileInputRef exists:', !!fileInputRef.current);
+                if (fileInputRef.current) {
+                  fileInputRef.current.click();
+                } else {
+                  console.error('File input reference is not available');
+                }
+              }}
+              onUrlClick={() => {
+                console.log('MediaControls onUrlClick called');
+                setShowUrlInput(true);
+                setShowMediaMenu(false);
+              }}
+              showMenu={showMediaMenu}
+              setShowMenu={setShowMediaMenu}
+            />
+            
+            {showUrlInput && (
+              <UrlInput 
+                onSubmit={handleUrlSubmit}
+                onCancel={() => {
+                  setShowUrlInput(false);
+                  setUrlError("");
+                }}
+                error={urlError}
+              />
+            )}
+            
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileInputChange}
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="image-upload"
+            />
 
-        {isUploading && (
-          <div className={styles.uploadingContainer}>
-            <div className={styles.uploadingContent}>
-              <FaSpinner className={styles.spinner} />
-              <div className={styles.progressContainer}>
-                <div className={styles.progressBar}>
-                  <div 
-                    className={styles.progressFill} 
-                    style={{ width: `${uploadProgress}%` }}
-                  />
-                </div>
-                <div className={styles.progressText}>
-                  Uploading... {uploadProgress}%
+            {isUploading && (
+              <div className={styles.uploadingContainer}>
+                <div className={styles.uploadingContent}>
+                  <FaSpinner className={styles.spinner} />
+                  <div className={styles.progressContainer}>
+                    <div className={styles.progressBar}>
+                      <div 
+                        className={styles.progressFill} 
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                    <div className={styles.progressText}>
+                      Uploading... {uploadProgress}%
+                    </div>
+                  </div>
                 </div>
               </div>
+            )}
+
+            <TipTapEditor
+              content={content}
+              onChange={setContent}
+              onReady={handleEditorReady}
+              onImageUploadClick={() => fileInputRef.current?.click()}
+              onLinkClick={() => setShowUrlInput(true)}
+            />
+          </>
+        )}
+
+        {showPreview && (
+          <div className={styles.contentPreview}>
+            <h2 className={styles.previewTitle}>Preview</h2>
+            <div className={styles.previewContainer}>
+              {content ? (
+                <div 
+                  className={styles.previewContent}
+                  dangerouslySetInnerHTML={{ __html: content }}
+                />
+              ) : (
+                <div className={styles.previewPlaceholder}>
+                  Your content preview will appear here...
+                </div>
+              )}
+            </div>
+            <div className={styles.previewHelper}>
+              This is how your post will look when published.
             </div>
           </div>
         )}
-
-        <ReactQuill
-          ref={quillRef}
-          theme="snow"
-          value={content}
-          onChange={(value) => setContent(value)}
-          modules={modules}
-          formats={formats}
-          placeholder="Write your story..."
-          preserveWhitespace={true}
-          onReady={() => {
-            console.log('Editor is ready');
-            setEditorLoaded(true);
-          }}
-        />
     
-
         {recentUploads && recentUploads.length > 0 && (
           <RecentUploads 
             uploads={recentUploads}

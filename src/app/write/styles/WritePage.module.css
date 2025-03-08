@@ -12,6 +12,14 @@
   position: relative;
 }
 
+.headerButtons {
+  display: flex;
+  gap: 10px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 .themeToggle {
   background: none;
   border: none;
@@ -20,9 +28,22 @@
   padding: 8px;
   border-radius: 50%;
   transition: all 0.3s;
-  position: absolute;
-  right: 0;
-  top: 0;
+}
+
+.previewToggle {
+  background: #f0f0f0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: #333;
+}
+
+.previewToggle:hover {
+  background-color: #e0e0e0;
 }
 
 .themeToggle:hover {
@@ -61,17 +82,12 @@
   color: #333;
   position: relative;
   padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
+/* Remove the blue line after section title */
 .sectionTitle::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 3px;
-  background-color: #0070f3;
-  border-radius: 2px;
+  content: none;
 }
 
 .editor {
@@ -177,6 +193,59 @@
   font-size: 16px;
   line-height: 1.6;
   color: #333;
+}
+
+.previewContent h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+  font-weight: bold;
+}
+
+.previewContent h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+  font-weight: bold;
+}
+
+.previewContent h3 {
+  font-size: 1.17em;
+  margin: 1em 0;
+  font-weight: bold;
+}
+
+.previewContent p {
+  margin: 1em 0;
+}
+
+.previewContent ul, 
+.previewContent ol {
+  padding-left: 2em;
+  margin: 1em 0;
+}
+
+.previewContent ul {
+  list-style-type: disc;
+}
+
+.previewContent ol {
+  list-style-type: decimal;
+}
+
+.previewContent blockquote {
+  border-left: 4px solid #0070f3;
+  padding-left: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+  color: #555;
+  background-color: #f9f9f9;
+  padding: 1em;
+  border-radius: 0 4px 4px 0;
+}
+
+.previewContent a {
+  color: #0070f3;
+  text-decoration: underline;
 }
 
 .previewContent img {
@@ -353,6 +422,44 @@
   color: #e0e0e0;
 }
 
+:global(.dark-mode) .previewContent h1 {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .previewContent h2 {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .previewContent h3 {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .previewContent p {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .previewContent ul,
+:global(.dark-mode) .previewContent ol {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .previewContent ul {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .previewContent ol {
+  color: #e0e0e0;
+}
+
+:global(.dark-mode) .previewContent blockquote {
+  background-color: #2d2d2d;
+  color: #ccc;
+}
+
+:global(.dark-mode) .previewContent a {
+  color: #3291ff;
+}
+
 :global(.dark-mode) .previewContent img {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -524,4 +631,13 @@
   .publish, .saveAsDraft {
     width: 100%;
   }
+}
+
+:global(.dark-mode) .previewToggle {
+  background: #2d2d2d;
+  color: #f0f0f0;
+}
+
+:global(.dark-mode) .previewToggle:hover {
+  background: #3d3d3d;
 } 

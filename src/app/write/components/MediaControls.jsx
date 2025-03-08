@@ -2,22 +2,22 @@ import { FaImage, FaLink, FaPlus, FaTimes } from 'react-icons/fa';
 import styles from '../styles/MediaControls.module.css';
 
 const MediaControls = ({
-  showMediaMenu,
+  showMenu,
+  setShowMenu,
   onImageClick,
-  onUrlClick,
-  onRecentClick
+  onUrlClick
 }) => {
   return (
     <div className={styles.mediaControls}>
       <button 
-        className={`${styles.addButton} ${showMediaMenu ? styles.active : ""}`} 
-        onClick={onRecentClick}
+        className={`${styles.addButton} ${showMenu ? styles.active : ""}`} 
+        onClick={() => setShowMenu(!showMenu)}
       >
-        {showMediaMenu ? <FaTimes /> : <FaPlus />}
+        {showMenu ? <FaTimes /> : <FaPlus />}
         <span className={styles.buttonLabel}>Add Media</span>
       </button>
       
-      {showMediaMenu && (
+      {showMenu && (
         <div className={styles.addMenu}>
           <button 
             className={styles.mediaButton} 

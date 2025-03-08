@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './test.module.css';
+import { createApiUrl } from '@/utils/apiUtils';
 
 export default function TestSSE() {
   const [messages, setMessages] = useState([]);
@@ -64,7 +65,7 @@ export default function TestSSE() {
   // Send a test like event
   const sendTestLike = async () => {
     try {
-      const res = await fetch('/api/posts/like', {
+      const res = await fetch(createApiUrl('/api/posts/like'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

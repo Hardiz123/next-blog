@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { slugify } from '../utils/helpers';
+import { getApiUrl } from '@/utils/apiUrl';
 
 export const usePost = () => {
   const router = useRouter();
@@ -28,7 +29,7 @@ export const usePost = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/posts', {
+      const res = await fetch(getApiUrl('/api/posts'), {
         method: 'POST',
         body: JSON.stringify({
           title,

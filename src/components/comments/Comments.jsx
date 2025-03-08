@@ -9,6 +9,7 @@ import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { FaPaperPlane, FaCommentDots, FaSpinner, FaTrash, FaEllipsisV } from "react-icons/fa";
 import Modal from "@/components/modal/Modal";
+import { createApiUrl, getBaseUrl } from "@/utils/apiUtils";
 
 // Debug mode for detailed logging
 const DEBUG = true;
@@ -22,14 +23,15 @@ function debugLog(...messages) {
 
 const fetcher = async (url) => {
   const res = await fetch(url);
-  const data = await res.json();
-
+  
   if (!res.ok) {
-    const error = new Error(data.message);
+    const error = new Error("An error occurred while fetching the data.");
+    error.info = await res.json();
+    error.status = res.status;
     throw error;
   }
-
-  return data;
+  
+  return res.json();
 };
 
 const Comments = ({ postSlug }) => {
@@ -39,7 +41,7 @@ const Comments = ({ postSlug }) => {
   const sseRef = useRef(null);
 
   const { data, mutate, isLoading, error } = useSWR(
-    `/api/comments?postSlug=${postSlug}`,
+    createApiUrl(`/api/comments?postSlug=${postSlug}`),
     fetcher,
     {
       dedupingInterval: 10000, // Dedupe requests within 10 seconds
@@ -159,7 +161,7 @@ const Comments = ({ postSlug }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/comments", {
+      const response = await fetch(createApiUrl("/api/comments"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -208,7 +210,7 @@ const Comments = ({ postSlug }) => {
     setIsDeletingComment(true);
     
     try {
-      const response = await fetch(`/api/comments/${commentToDelete.id}`, {
+      const response = await fetch(createApiUrl(`/api/comments/${commentToDelete.id}`), {
         method: "DELETE",
       });
       

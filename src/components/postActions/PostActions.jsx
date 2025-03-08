@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { FaHeart, FaRegHeart, FaTrash, FaSpinner } from "react-icons/fa";
 import toast from "react-hot-toast";
 import Modal from "@/components/modal/Modal";
+import { createApiUrl } from "@/utils/apiUtils";
 
 // Enable debug mode for verbose logging
 const DEBUG = true;
@@ -223,7 +224,7 @@ export default function PostActions({ post }) {
     
     try {
       debugLog("Manually refreshing post data");
-      const res = await fetch(`/api/posts/${post.slug}`, {
+      const res = await fetch(createApiUrl(`/api/posts/${post.slug}`), {
         cache: 'no-store'
       });
       
@@ -261,7 +262,7 @@ export default function PostActions({ post }) {
     setLikes(prev => isLiked ? prev - 1 : prev + 1);
     
     try {
-      const response = await fetch("/api/posts/like", {
+      const response = await fetch(createApiUrl("/api/posts/like"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -326,10 +327,7 @@ export default function PostActions({ post }) {
     setDeleteLoading(true);
 
     try {
-      // Use the utility function to create the API URL
-      const url = `/api/posts/${post.slug}`;
-      
-      const response = await fetch(url, {
+      const response = await fetch(createApiUrl(`/api/posts/${post.slug}`), {
         method: "DELETE",
       });
 

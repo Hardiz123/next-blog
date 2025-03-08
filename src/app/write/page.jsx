@@ -1,15 +1,24 @@
-export const dynamicConfig = "force-dynamic";
+export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
+export const revalidate = 0;
 
 "use client";
 
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { FaSpinner, FaSun, FaMoon } from "react-icons/fa";
 import toast from "react-hot-toast";
-import('react-quill/dist/quill.snow.css');
+import dynamic from "next/dynamic";
+
+// Dynamically import ReactQuill with SSR disabled
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+  loading: () => <div className={styles.loading}>Loading editor...</div>,
+});
+
+// Dynamically import CSS to avoid SSR issues
+const QuillCSS = dynamic(() => import('./components/QuillCSS'), { ssr: false });
 
 import styles from "./styles/WritePage.module.css";
 import CoverPhoto from "./components/CoverPhoto";
@@ -22,8 +31,6 @@ import { usePost } from "./hooks/usePost";
 import { useEditor } from "./hooks/useEditor";
 import { useMediaUpload } from "./hooks/useMediaUpload";
 import { validateUrl } from "./utils/helpers";
-import ReactQuill from "react-quill";
-
 
 const WritePage = () => {
   const { status } = useSession();

@@ -50,6 +50,7 @@
   background-color: #252525;
   color: #e0e0e0;
   border-color: #444;
+  width: fit-content;
 }
 
 .darkMode .urlInputContainer,

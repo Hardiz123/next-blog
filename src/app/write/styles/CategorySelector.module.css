@@ -1,5 +1,7 @@
 .categorySelector {
   margin-bottom: 20px;
+  position: relative;
+  z-index: 10; /* Ensure dropdown appears above other elements */
 }
 
 .label {
@@ -17,7 +19,7 @@
 
 .select {
   width: 100%;
-  padding: 12px;
+  padding: 12px 15px;
   font-size: 15px;
   border: 2px solid #e1e1e1;
   border-radius: 8px;
@@ -26,43 +28,84 @@
   cursor: pointer;
   appearance: none;
   transition: all 0.3s;
-}
-
-.select:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .select:hover {
   border-color: #ccc;
+  background-color: #f9f9f9;
 }
 
 .selectArrow {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
   color: #666;
-  transition: transform 0.3s;
-}
-
-.selectContainer:focus-within .selectArrow {
-  transform: translateY(-50%) rotate(180deg);
-}
-
-.select option {
-  padding: 12px;
-  font-size: 15px;
-  background-color: #fff;
-  color: #444;
-}
-
-.error {
-  color: #dc3545;
   font-size: 14px;
-  margin-top: 5px;
+  transition: transform 0.3s ease;
+}
+
+.selectArrow.open {
+  transform: rotate(180deg);
+}
+
+.categoriesList {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 20;
+  animation: slideDown 0.2s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.categoryOption {
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.categoryOption:last-child {
+  border-bottom: none;
+}
+
+.categoryOption:hover {
+  background-color: #f5f5f5;
+}
+
+.categoryOption.selected {
+  background-color: #e6f7ff;
+  color: #0070f3;
+  font-weight: 500;
+}
+
+/* Scrollbar styling */
+.categoriesList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.categoriesList::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.categoriesList::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.categoriesList::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
 }
 
 /* Dark mode styles */
@@ -76,12 +119,8 @@
   color: #e0e0e0;
 }
 
-:global(.dark-mode) .select:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2);
-}
-
 :global(.dark-mode) .select:hover {
+  background-color: #333;
   border-color: #555;
 }
 
@@ -89,14 +128,44 @@
   color: #ccc;
 }
 
-:global(.dark-mode) .select option {
+:global(.dark-mode) .categoriesList {
   background-color: #252525;
-  color: #e0e0e0;
+  border-color: #444;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global(.dark-mode) .categoryOption {
+  border-color: #333;
+}
+
+:global(.dark-mode) .categoryOption:hover {
+  background-color: #333;
+}
+
+:global(.dark-mode) .categoryOption.selected {
+  background-color: #0c2d48;
+  color: #3291ff;
+}
+
+:global(.dark-mode) .categoriesList::-webkit-scrollbar-track {
+  background: #333;
+}
+
+:global(.dark-mode) .categoriesList::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+:global(.dark-mode) .categoriesList::-webkit-scrollbar-thumb:hover {
+  background: #666;
 }
 
 @media screen and (max-width: 768px) {
   .select {
-    padding: 10px;
+    padding: 10px 15px;
     font-size: 14px;
+  }
+  
+  .categoryOption {
+    padding: 10px 15px;
   }
 } 

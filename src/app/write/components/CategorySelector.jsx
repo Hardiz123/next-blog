@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import styles from '../styles/CategorySelector.module.css';
 
@@ -6,43 +6,63 @@ const CATEGORIES = [
   'style',
   'fashion',
   'food',
-  'culture',
   'travel',
-  'coding'
+  'culture',
+  'coding',
+  'technology',
+  'business'
 ];
 
 const CategorySelector = ({
-  selectedCategory,
-  onCategorySelect
+  category,
+  setCategory
 }) => {
   const [showCategories, setShowCategories] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowCategories(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className={styles.categoryDropdown}>
-      <div 
-        className={styles.categorySelector} 
-        onClick={() => setShowCategories(!showCategories)}
-      >
-        <span>{selectedCategory || "Select category"}</span>
-        <FaChevronDown />
-      </div>
-      
-      {showCategories && (
-        <div className={styles.categoriesList}>
-          {CATEGORIES.map((category) => (
-            <div 
-              key={category}
-              className={`${styles.categoryOption} ${selectedCategory === category ? styles.selected : ""}`}
-              onClick={() => {
-                onCategorySelect(category);
-                setShowCategories(false);
-              }}
-            >
-              {category}
-            </div>
-          ))}
+    <div className={styles.categorySelector} ref={dropdownRef}>
+      <label className={styles.label}>Category</label>
+      <div className={styles.selectContainer}>
+        <div 
+          className={styles.select}
+          onClick={() => setShowCategories(!showCategories)}
+        >
+          <span>{category || "Select category"}</span>
+          <FaChevronDown className={`${styles.selectArrow} ${showCategories ? styles.open : ''}`} />
         </div>
-      )}
+        
+        {showCategories && (
+          <div className={styles.categoriesList}>
+            {CATEGORIES.map((cat) => (
+              <div 
+                key={cat}
+                className={`${styles.categoryOption} ${category === cat ? styles.selected : ""}`}
+                onClick={() => {
+                  setCategory(cat);
+                  setShowCategories(false);
+                }}
+              >
+                {cat}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

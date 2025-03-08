@@ -74,7 +74,7 @@
 }
 
 .description img {
-  max-width: 100%;
+  max-width: 900px !important;
   height: auto;
   border-radius: 8px;
   margin: 20px 0;
@@ -83,14 +83,12 @@
 }
 
 .description iframe {
-  max-width: 100%;
   border-radius: 8px;
   margin: 20px 0;
   display: block;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   height: 315px;
   width: 560px;
-  max-width: 100%;
 }
 
 .description video {

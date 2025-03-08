@@ -4,8 +4,9 @@ import { useRef, useState, useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { FaSpinner, FaImage, FaLink, FaSun, FaMoon } from "react-icons/fa";
+import { FaSpinner, FaSun, FaMoon } from "react-icons/fa";
 import toast from "react-hot-toast";
+import('react-quill/dist/quill.snow.css');
 
 import styles from "./styles/WritePage.module.css";
 import CoverPhoto from "./components/CoverPhoto";
@@ -55,12 +56,6 @@ const WritePage = () => {
     handleUpload,
     handleDelete
   } = useMediaUpload();
-
-  // Import Quill CSS
-  useEffect(() => {
-    // This ensures the Quill CSS is loaded after component mount
-    import('react-quill/dist/quill.snow.css');
-  }, []);
 
   // Fix for addRange error
   useEffect(() => {
@@ -193,15 +188,6 @@ const WritePage = () => {
       document.body.classList.remove('dark-mode');
     }
   };
-
-  // Handle content change safely
-  const handleContentChange = (value) => {
-    // Prevent editor from disappearing by ensuring we don't set content to null or undefined
-    if (value !== undefined && value !== null) {
-      setContent(value);
-    }
-  };
-
   // Configure Quill modules
   const modules = useMemo(
     () => ({
@@ -218,7 +204,6 @@ const WritePage = () => {
       ],
       handlers: {
         'image': function() {
-          // Trigger file input click when image button is clicked
           fileInputRef.current?.click();
         }
       }

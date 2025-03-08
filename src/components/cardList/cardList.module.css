@@ -4,4 +4,28 @@
 
 .title{
   margin: 50px 0px;
+  position: relative;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--textColor);
+}
+
+.refreshing {
+  font-size: 16px;
+  font-weight: normal;
+  color: #0070f3;
+  font-style: italic;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
 }

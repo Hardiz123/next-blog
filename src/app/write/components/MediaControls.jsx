@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { FaImage, FaLink, FaPlus, FaTimes } from 'react-icons/fa';
 import styles from '../styles/MediaControls.module.css';
 

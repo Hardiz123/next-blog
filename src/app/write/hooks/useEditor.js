@@ -128,7 +128,7 @@ export const useEditor = () => {
               const uploadEvent = new CustomEvent('editor-image-drop', { 
                 detail: { file: droppedFile } 
               });
-              document.dispatchEvent(uploadEvent);
+              typeof document !== "undefined" && document.dispatchEvent(uploadEvent);
             } else {
               toast.error('Only image files can be dropped into the editor');
             }
@@ -196,7 +196,7 @@ export const useEditor = () => {
           // Set our custom handler
           toolbar.handlers.image = function() {
             // This will be handled by the onClick handler in the React component
-            const fileInput = document.querySelector('input[type=file][accept*="image"]');
+            const fileInput = typeof document !== "undefined" && document.querySelector('input[type=file][accept*="image"]');
             if (fileInput) {
               fileInput.click();
             }

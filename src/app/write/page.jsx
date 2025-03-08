@@ -20,19 +20,16 @@ import { useMediaUpload } from "./hooks/useMediaUpload";
 import { validateUrl } from "./utils/helpers";
 
 // Dynamically import ReactQuill with SSR disabled
-const ReactQuill = dynamic(() => import("react-quill"), {
+const ReactQuill = dynamic(() => {
+  if (typeof window !== 'undefined') {
+    // Only import CSS on client side
+    require('react-quill/dist/quill.snow.css');
+  }
+  return import('react-quill');
+}, { 
   ssr: false,
-  loading: () => <div className={styles.loading}>Loading editor...</div>
+  loading: () => <p>Loading editor...</p>
 });
-
-// Client-side only component to load CSS
-const QuillStyles = () => {
-  useEffect(() => {
-    // Import CSS only on client side
-    import('react-quill/dist/quill.snow.css');
-  }, []);
-  return null;
-};
 
 const WritePage = () => {
   const { status } = useSession();
@@ -86,7 +83,7 @@ const WritePage = () => {
       
       return () => clearTimeout(timer);
     }
-  }, [quillRef.current]);
+  }, [quillRef]);
 
   // Check for dark mode preference on mount
   useEffect(() => {
@@ -200,6 +197,7 @@ const WritePage = () => {
       document.body.classList.remove('dark-mode');
     }
   };
+
   // Configure Quill modules
   const modules = useMemo(
     () => ({
@@ -247,7 +245,6 @@ const WritePage = () => {
 
   return (
     <div className={styles.container}>
-      <QuillStyles />
       <div className={styles.editorHeader}>
         <input
           type="text"
@@ -265,17 +262,12 @@ const WritePage = () => {
           {isDarkMode ? <FaSun /> : <FaMoon />}
         </button>
       </div>
-
-      <CategorySelector 
-        category={category} 
-        setCategory={setCategory} 
-      />
-
+      
       <CoverPhoto 
         coverPhotoUrl={coverPhotoUrl} 
         setCoverPhotoUrl={setCoverPhotoUrl} 
       />
-
+      
       <div className={styles.mediaSection}>
         <h2 className={styles.sectionTitle}>Content</h2>
         
@@ -288,7 +280,7 @@ const WritePage = () => {
           showMenu={showMediaMenu}
           setShowMenu={setShowMediaMenu}
         />
-
+        
         {showUrlInput && (
           <UrlInput 
             onSubmit={handleUrlSubmit}
@@ -299,7 +291,7 @@ const WritePage = () => {
             error={urlError}
           />
         )}
-
+        
         <input
           type="file"
           ref={fileInputRef}
@@ -327,17 +319,16 @@ const WritePage = () => {
           </div>
         )}
 
-          <ReactQuill
-            ref={quillRef}
-            theme="snow"
-            value={content}
-            onChange={(value) => setContent(value)}
-            modules={modules}
-            formats={formats}
-            
-            placeholder="Write your story..."
-            preserveWhitespace={true}
-          />
+        <ReactQuill
+          ref={quillRef}
+          theme="snow"
+          value={content}
+          onChange={(value) => setContent(value)}
+          modules={modules}
+          formats={formats}
+          placeholder="Write your story..."
+          preserveWhitespace={true}
+        />
     
 
         {recentUploads && recentUploads.length > 0 && (
@@ -348,32 +339,12 @@ const WritePage = () => {
           />
         )}
       </div>
-
-      <div className={styles.contentPreview}>
-        <h2 className={styles.previewTitle}>Preview</h2>
-        <div className={styles.previewContainer}>
-          {content ? (
-            <div 
-              className={styles.previewContent}
-              dangerouslySetInnerHTML={{ 
-                __html: content
-                  // Hide image URLs in the preview
-                  .replace(/<span class="image-url">(.*?)<\/span>/g, '')
-                  // Ensure images have proper styling
-                  .replace(/<img/g, '<img class="preview-image"')
-              }}
-            />
-          ) : (
-            <div className={styles.previewPlaceholder}>
-              Your content preview will appear here...
-            </div>
-          )}
-        </div>
-        <div className={styles.previewHelper}>
-          This is how your post will look when published.
-        </div>
-      </div>
-
+      
+      <CategorySelector 
+        category={category} 
+        setCategory={setCategory} 
+      />
+      
       <div className={styles.actionButtons}>
         <button 
           className={styles.publish}

@@ -1,10 +1,3 @@
-// Mark this page as dynamic to prevent static generation
-export const dynamic = "force-dynamic";
-// Use Node.js runtime
-export const runtime = "nodejs";
-// Disable static generation
-export const generateStaticParams = () => [];
-
 "use client";
 
 import { useRef, useState, useEffect, useMemo, useCallback } from "react";
@@ -12,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaSpinner, FaSun, FaMoon } from "react-icons/fa";
 import toast from "react-hot-toast";
-import { default as dynamicImport } from "next/dynamic";
+import dynamic from "next/dynamic";
 import styles from "./styles/WritePage.module.css";
 
 // Import components
@@ -29,7 +22,7 @@ import { useMediaUpload } from "./hooks/useMediaUpload";
 import { validateUrl } from "./utils/helpers";
 
 // Dynamically import ReactQuill with SSR disabled
-const ReactQuill = dynamicImport(
+const ReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import("react-quill");
     // Import CSS only on client side
@@ -52,6 +45,12 @@ const WritePage = () => {
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [showMediaMenu, setShowMediaMenu] = useState(false);
   const [urlError, setUrlError] = useState("");
+  const [isClient, setIsClient] = useState(false);
+
+  // Check if we're on the client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Initialize custom hooks
   const { 
@@ -81,6 +80,8 @@ const WritePage = () => {
 
   // Fix for addRange error
   useEffect(() => {
+    if (!isClient) return;
+    
     // Wait for the editor to be fully mounted
     if (quillRef.current) {
       // Give the editor a moment to initialize
@@ -96,11 +97,11 @@ const WritePage = () => {
       
       return () => clearTimeout(timer);
     }
-  }, [quillRef]);
+  }, [quillRef, isClient]);
 
   // Check for dark mode preference on mount
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
     
     const darkModePreference = localStorage.getItem('darkMode') === 'true';
     setIsDarkMode(darkModePreference);
@@ -109,7 +110,7 @@ const WritePage = () => {
     } else {
       document.body.classList.remove('dark-mode');
     }
-  }, []);
+  }, [isClient]);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -120,7 +121,7 @@ const WritePage = () => {
 
   // Listen for image drop events from the editor
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
     
     const handleEditorImageDrop = (event) => {
       const { file } = event.detail;
@@ -133,7 +134,7 @@ const WritePage = () => {
     return () => {
       document.removeEventListener('editor-image-drop', handleEditorImageDrop);
     };
-  }, [handleImageSelect]);
+  }, [handleImageSelect, isClient]);
 
   // Handle file input change
   const handleFileInputChange = (e) => {
@@ -204,7 +205,7 @@ const WritePage = () => {
 
   // Toggle dark/light mode
   const toggleThemeMode = () => {
-    if (typeof window === 'undefined') return;
+    if (!isClient) return;
     
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
@@ -216,6 +217,7 @@ const WritePage = () => {
       document.body.classList.remove('dark-mode');
     }
   };
+
   // Configure Quill modules
   const modules = useMemo(
     () => ({
@@ -257,6 +259,16 @@ const WritePage = () => {
       <div className={styles.loading}>
         <FaSpinner className={styles.spinner} />
         <span>Loading...</span>
+      </div>
+    );
+  }
+
+  // If we're not on the client yet, show a loading state
+  if (!isClient) {
+    return (
+      <div className={styles.loading}>
+        <FaSpinner className={styles.spinner} />
+        <span>Loading editor...</span>
       </div>
     );
   }

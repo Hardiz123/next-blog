@@ -133,7 +133,7 @@ const WritePage = () => {
     return () => {
       document.removeEventListener('editor-image-drop', handleEditorImageDrop);
     };
-  }, []);
+  }, [handleImageSelect]);
 
   // Handle file input change
   const handleFileInputChange = (e) => {

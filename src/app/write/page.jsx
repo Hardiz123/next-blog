@@ -1,41 +1,38 @@
 "use client";
 
-import { useRef, useState, useEffect, useMemo, useCallback } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaSpinner, FaSun, FaMoon } from "react-icons/fa";
 import toast from "react-hot-toast";
 import dynamic from "next/dynamic";
-import styles from "./styles/WritePage.module.css";
 
-// Import components
+import styles from "./styles/WritePage.module.css";
 import CoverPhoto from "./components/CoverPhoto";
 import MediaControls from "./components/MediaControls";
 import UrlInput from "./components/UrlInput";
 import RecentUploads from "./components/RecentUploads";
 import CategorySelector from "./components/CategorySelector";
 
-// Import hooks and utilities
 import { usePost } from "./hooks/usePost";
 import { useEditor } from "./hooks/useEditor";
 import { useMediaUpload } from "./hooks/useMediaUpload";
 import { validateUrl } from "./utils/helpers";
 
 // Dynamically import ReactQuill with SSR disabled
-const ReactQuill = dynamic(
-  async () => {
-    const { default: RQ } = await import("react-quill");
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <div className={styles.loading}>Loading editor...</div>
+});
+
+// Client-side only component to load CSS
+const QuillStyles = () => {
+  useEffect(() => {
     // Import CSS only on client side
-    if (typeof window !== 'undefined') {
-      await import("react-quill/dist/quill.snow.css");
-    }
-    return RQ;
-  },
-  { 
-    ssr: false,
-    loading: () => <div className={styles.loading}>Loading editor...</div>
-  }
-);
+    import('react-quill/dist/quill.snow.css');
+  }, []);
+  return null;
+};
 
 const WritePage = () => {
   const { status } = useSession();
@@ -45,12 +42,6 @@ const WritePage = () => {
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [showMediaMenu, setShowMediaMenu] = useState(false);
   const [urlError, setUrlError] = useState("");
-  const [isClient, setIsClient] = useState(false);
-
-  // Check if we're on the client side
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   // Initialize custom hooks
   const { 
@@ -80,8 +71,6 @@ const WritePage = () => {
 
   // Fix for addRange error
   useEffect(() => {
-    if (!isClient) return;
-    
     // Wait for the editor to be fully mounted
     if (quillRef.current) {
       // Give the editor a moment to initialize
@@ -97,12 +86,10 @@ const WritePage = () => {
       
       return () => clearTimeout(timer);
     }
-  }, [quillRef, isClient]);
+  }, [quillRef.current]);
 
   // Check for dark mode preference on mount
   useEffect(() => {
-    if (!isClient) return;
-    
     const darkModePreference = localStorage.getItem('darkMode') === 'true';
     setIsDarkMode(darkModePreference);
     if (darkModePreference) {
@@ -110,7 +97,7 @@ const WritePage = () => {
     } else {
       document.body.classList.remove('dark-mode');
     }
-  }, [isClient]);
+  }, []);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -121,8 +108,6 @@ const WritePage = () => {
 
   // Listen for image drop events from the editor
   useEffect(() => {
-    if (!isClient) return;
-    
     const handleEditorImageDrop = (event) => {
       const { file } = event.detail;
       if (file) {
@@ -134,7 +119,7 @@ const WritePage = () => {
     return () => {
       document.removeEventListener('editor-image-drop', handleEditorImageDrop);
     };
-  }, [handleImageSelect, isClient]);
+  }, []);
 
   // Handle file input change
   const handleFileInputChange = (e) => {
@@ -145,7 +130,7 @@ const WritePage = () => {
   };
 
   // Handle image selection
-  const handleImageSelect = useCallback(async (file) => {
+  const handleImageSelect = async (file) => {
     if (!file) return;
     
     // Validate file type
@@ -180,7 +165,7 @@ const WritePage = () => {
       toast.error("Failed to upload image. Please try again.");
       console.error("Image upload error:", error);
     }
-  }, [handleUpload, insertImageAtCursor, setShowMediaMenu]);
+  };
 
   // Handle URL submission
   const handleUrlSubmit = (url) => {
@@ -205,8 +190,6 @@ const WritePage = () => {
 
   // Toggle dark/light mode
   const toggleThemeMode = () => {
-    if (!isClient) return;
-    
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
     localStorage.setItem('darkMode', newDarkMode.toString());
@@ -217,7 +200,6 @@ const WritePage = () => {
       document.body.classList.remove('dark-mode');
     }
   };
-
   // Configure Quill modules
   const modules = useMemo(
     () => ({
@@ -263,18 +245,9 @@ const WritePage = () => {
     );
   }
 
-  // If we're not on the client yet, show a loading state
-  if (!isClient) {
-    return (
-      <div className={styles.loading}>
-        <FaSpinner className={styles.spinner} />
-        <span>Loading editor...</span>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.container}>
+      <QuillStyles />
       <div className={styles.editorHeader}>
         <input
           type="text"
@@ -292,82 +265,130 @@ const WritePage = () => {
           {isDarkMode ? <FaSun /> : <FaMoon />}
         </button>
       </div>
-      
+
+      <CategorySelector 
+        category={category} 
+        setCategory={setCategory} 
+      />
+
       <CoverPhoto 
         coverPhotoUrl={coverPhotoUrl} 
         setCoverPhotoUrl={setCoverPhotoUrl} 
       />
-      
-      <div className={styles.editorContainer}>
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          accept="image/*"
-          onChange={handleFileInputChange}
-        />
-        
-        <ReactQuill
-          ref={quillRef}
-          theme="snow"
-          value={content}
-          onChange={setContent}
-          modules={modules}
-          formats={formats}
-          placeholder="Write your story..."
-          className={styles.editor}
-        />
+
+      <div className={styles.mediaSection}>
+        <h2 className={styles.sectionTitle}>Content</h2>
         
         <MediaControls 
           onImageClick={() => fileInputRef.current?.click()}
-          onUrlClick={() => setShowUrlInput(true)}
-          onRecentClick={() => setShowMediaMenu(!showMediaMenu)}
-          showMediaMenu={showMediaMenu}
+          onUrlClick={() => {
+            setShowUrlInput(true);
+            setShowMediaMenu(false);
+          }}
+          showMenu={showMediaMenu}
+          setShowMenu={setShowMediaMenu}
         />
-        
+
         {showUrlInput && (
           <UrlInput 
             onSubmit={handleUrlSubmit}
-            onClose={() => setShowUrlInput(false)}
+            onCancel={() => {
+              setShowUrlInput(false);
+              setUrlError("");
+            }}
             error={urlError}
           />
         )}
-        
-        {showMediaMenu && (
+
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileInputChange}
+          accept="image/*"
+          style={{ display: 'none' }}
+        />
+
+        {isUploading && (
+          <div className={styles.uploadingContainer}>
+            <div className={styles.uploadingContent}>
+              <FaSpinner className={styles.spinner} />
+              <div className={styles.progressContainer}>
+                <div className={styles.progressBar}>
+                  <div 
+                    className={styles.progressFill} 
+                    style={{ width: `${uploadProgress}%` }}
+                  />
+                </div>
+                <div className={styles.progressText}>
+                  Uploading... {uploadProgress}%
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+          <ReactQuill
+            ref={quillRef}
+            theme="snow"
+            value={content}
+            onChange={(value) => setContent(value)}
+            modules={modules}
+            formats={formats}
+            
+            placeholder="Write your story..."
+            preserveWhitespace={true}
+          />
+    
+
+        {recentUploads && recentUploads.length > 0 && (
           <RecentUploads 
             uploads={recentUploads}
-            onSelect={handleInsertRecentUpload}
+            onInsert={handleInsertRecentUpload}
             onDelete={handleDelete}
           />
         )}
       </div>
-      
-      <div className={styles.categoryContainer}>
-        <CategorySelector 
-          selectedCategory={category}
-          onSelect={setCategory}
-        />
+
+      <div className={styles.contentPreview}>
+        <h2 className={styles.previewTitle}>Preview</h2>
+        <div className={styles.previewContainer}>
+          {content ? (
+            <div 
+              className={styles.previewContent}
+              dangerouslySetInnerHTML={{ 
+                __html: content
+                  // Hide image URLs in the preview
+                  .replace(/<span class="image-url">(.*?)<\/span>/g, '')
+                  // Ensure images have proper styling
+                  .replace(/<img/g, '<img class="preview-image"')
+              }}
+            />
+          ) : (
+            <div className={styles.previewPlaceholder}>
+              Your content preview will appear here...
+            </div>
+          )}
+        </div>
+        <div className={styles.previewHelper}>
+          This is how your post will look when published.
+        </div>
       </div>
-      
-      <div className={styles.buttonContainer}>
+
+      <div className={styles.actionButtons}>
         <button 
-          className={`${styles.button} ${styles.draftButton}`}
+          className={styles.publish}
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+        >
+          {isSubmitting && <FaSpinner className={styles.spinner} />}
+          Publish Post
+        </button>
+        <button 
+          className={styles.saveAsDraft}
           onClick={handleSaveAsDraft}
           disabled={isSubmitting}
         >
           Save as Draft
-        </button>
-        <button 
-          className={`${styles.button} ${styles.publishButton}`}
-          onClick={handleSubmit}
-          disabled={isSubmitting || !title || !content}
-        >
-          {isSubmitting ? (
-            <>
-              <FaSpinner className={styles.spinner} />
-              Publishing...
-            </>
-          ) : 'Publish'}
         </button>
       </div>
     </div>

@@ -3,20 +3,27 @@ import styles from "./cardList.module.css";
 import Pagination from "../pagination/Pagination";
 import Card from "../card/Card";
 import CardListClient from "./CardListClient";
+import { createApiUrl } from "@/utils/apiUtils";
 
 const getData = async (page, cat) => {
-  const res = await fetch(
-    `http://localhost:3000/api/posts?page=${page}&cat=${cat || ""}`,
-    {
+  try {
+    // Use the utility function to create the API URL
+    const url = createApiUrl('/api/posts', { page, cat });
+    
+    const res = await fetch(url, {
       cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch posts: ${res.status}`);
     }
-  );
 
-  if (!res.ok) {
-    throw new Error("Failed");
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    // Return empty data to prevent breaking the UI
+    return { posts: [], count: 0 };
   }
-
-  return res.json();
 };
 
 const CardList = async ({ page, cat }) => {

@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { FaSpinner, FaSun, FaMoon } from "react-icons/fa";
 import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
 import('react-quill/dist/quill.snow.css');
 
 import styles from "./styles/WritePage.module.css";
@@ -19,8 +19,12 @@ import { usePost } from "./hooks/usePost";
 import { useEditor } from "./hooks/useEditor";
 import { useMediaUpload } from "./hooks/useMediaUpload";
 import { validateUrl } from "./utils/helpers";
-import ReactQuill from "react-quill";
 
+// Dynamically import ReactQuill with SSR disabled
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+  loading: () => <div className={styles.loading}>Loading editor...</div>,
+});
 
 const WritePage = () => {
   const { status } = useSession();
@@ -74,10 +78,12 @@ const WritePage = () => {
       
       return () => clearTimeout(timer);
     }
-  }, [quillRef.current]);
+  }, [quillRef]);
 
   // Check for dark mode preference on mount
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const darkModePreference = localStorage.getItem('darkMode') === 'true';
     setIsDarkMode(darkModePreference);
     if (darkModePreference) {
@@ -96,6 +102,8 @@ const WritePage = () => {
 
   // Listen for image drop events from the editor
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const handleEditorImageDrop = (event) => {
       const { file } = event.detail;
       if (file) {
@@ -118,7 +126,7 @@ const WritePage = () => {
   };
 
   // Handle image selection
-  const handleImageSelect = async (file) => {
+  const handleImageSelect = useCallback(async (file) => {
     if (!file) return;
     
     // Validate file type
@@ -153,7 +161,7 @@ const WritePage = () => {
       toast.error("Failed to upload image. Please try again.");
       console.error("Image upload error:", error);
     }
-  };
+  }, [handleUpload, insertImageAtCursor, setShowMediaMenu]);
 
   // Handle URL submission
   const handleUrlSubmit = (url) => {
@@ -178,6 +186,8 @@ const WritePage = () => {
 
   // Toggle dark/light mode
   const toggleThemeMode = () => {
+    if (typeof window === 'undefined') return;
+    
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
     localStorage.setItem('darkMode', newDarkMode.toString());

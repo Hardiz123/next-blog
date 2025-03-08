@@ -12,6 +12,9 @@ import Modal from "@/components/modal/Modal";
 // Enable debug mode for verbose logging
 const DEBUG = true;
 
+// Check if we're in the browser environment
+const isBrowser = typeof window !== 'undefined';
+
 /**
  * Helper for debug logging
  */
@@ -304,6 +307,8 @@ export default function PostActions({ post }) {
 
   // Open the delete confirmation modal
   const openDeleteModal = () => {
+    if (!isBrowser) return; // Skip on server-side
+    
     if (!session || session.user.email !== post.user.email) {
       toast.error("You can only delete your own posts");
       return;
@@ -314,12 +319,17 @@ export default function PostActions({ post }) {
 
   // Handle delete button click (for post author)
   const handleDelete = async () => {
+    if (!isBrowser) return; // Skip on server-side
+    
     if (deleteLoading) return;
     
     setDeleteLoading(true);
 
     try {
-      const response = await fetch(`/api/posts/${post.slug}`, {
+      // Use the utility function to create the API URL
+      const url = `/api/posts/${post.slug}`;
+      
+      const response = await fetch(url, {
         method: "DELETE",
       });
 
@@ -330,7 +340,7 @@ export default function PostActions({ post }) {
         router.push("/");
       } else {
         const data = await response.json();
-        throw new Error(data.error || "Failed to delete post");
+        throw new Error(data.message || "Failed to delete post");
       }
     } catch (error) {
       toast.error("Error deleting post: " + error.message);

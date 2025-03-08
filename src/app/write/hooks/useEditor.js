@@ -91,6 +91,9 @@ export const useEditor = () => {
 
   // Setup drag and drop handling
   useEffect(() => {
+    // Only run in browser environment
+    if (typeof window === 'undefined') return;
+    
     let cleanupTimeout;
     
     const setupDropHandler = () => {
@@ -125,10 +128,12 @@ export const useEditor = () => {
               }
               
               // Emit an event or use a callback to handle the file upload
-              const uploadEvent = new CustomEvent('editor-image-drop', { 
-                detail: { file: droppedFile } 
-              });
-              typeof document !== "undefined" && document.dispatchEvent(uploadEvent);
+              if (typeof document !== 'undefined') {
+                const uploadEvent = new CustomEvent('editor-image-drop', { 
+                  detail: { file: droppedFile } 
+                });
+                document.dispatchEvent(uploadEvent);
+              }
             } else {
               toast.error('Only image files can be dropped into the editor');
             }
@@ -165,10 +170,13 @@ export const useEditor = () => {
         clearTimeout(cleanupTimeout);
       }
     };
-  }, [quillRef.current]);
+  }, []);
 
   // Add custom image handler to Quill
   useEffect(() => {
+    // Only run in browser environment
+    if (typeof window === 'undefined') return;
+    
     let imageHandlerTimeout;
     
     const setupImageHandler = () => {
@@ -196,9 +204,11 @@ export const useEditor = () => {
           // Set our custom handler
           toolbar.handlers.image = function() {
             // This will be handled by the onClick handler in the React component
-            const fileInput = typeof document !== "undefined" && document.querySelector('input[type=file][accept*="image"]');
-            if (fileInput) {
-              fileInput.click();
+            if (typeof document !== 'undefined') {
+              const fileInput = document.querySelector('input[type=file][accept*="image"]');
+              if (fileInput) {
+                fileInput.click();
+              }
             }
           };
         }
@@ -216,7 +226,7 @@ export const useEditor = () => {
         clearTimeout(imageHandlerTimeout);
       }
     };
-  }, [quillRef.current]);
+  }, []);
 
   return {
     quillRef,

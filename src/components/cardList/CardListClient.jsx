@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./cardList.module.css";
 import Pagination from "../pagination/Pagination";
 import Card from "../card/Card";
 import { useRouter, usePathname } from "next/navigation";
+import { createApiUrl } from "@/utils/apiUtils";
+
+const isBrowser = typeof window !== 'undefined';
 
 const CardListClient = ({ 
   initialPosts, 
@@ -21,28 +24,31 @@ const CardListClient = ({
   const pathname = usePathname();
 
   // Function to fetch posts
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
+    if (!isBrowser) return; // Skip on server-side
+    
     setLoading(true);
     try {
-      const res = await fetch(
-        `/api/posts?page=${page}&cat=${cat || ""}`,
-        {
-          cache: "no-store",
-        }
-      );
+      // Use the utility function to create the API URL
+      const url = createApiUrl('/api/posts', { page, cat });
+      
+      const res = await fetch(url, {
+        cache: "no-store",
+      });
 
       if (!res.ok) {
-        throw new Error("Failed to fetch posts");
+        throw new Error(`Failed to fetch posts: ${res.status}`);
       }
 
       const data = await res.json();
-      setPosts(data.posts);
+      setPosts(data.posts || []);
     } catch (error) {
       console.error("Error fetching posts:", error);
+      // Don't update state on error to keep existing posts
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, cat]);
 
   // Refetch data when component becomes visible again
   useEffect(() => {
@@ -76,7 +82,7 @@ const CardListClient = ({
       clearInterval(intervalId);
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [pathname, page, cat]);
+  }, [pathname, page, cat, fetchPosts]);
 
   return (
     <div className={styles.container}>

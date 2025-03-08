@@ -21,6 +21,11 @@ export function getBaseUrl() {
     return process.env.NEXT_PUBLIC_BASE_URL;
   }
   
+  // Default to empty string (relative URLs) in production
+  if (process.env.NODE_ENV === 'production') {
+    return '';
+  }
+  
   // Default to localhost in development
   return 'http://localhost:3000';
 }

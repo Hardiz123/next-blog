@@ -5,9 +5,11 @@ import Comments from "@/components/comments/Comments";
 import PostActions from "@/components/postActions/PostActions";
 import { Suspense } from 'react';
 import { redirect } from "next/navigation";
+import { getBaseUrl } from "@/utils/apiUtils";
 
 const getData = async (slug) => {
-  const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
+  const baseUrl = getBaseUrl();
+  const res = await fetch(`${baseUrl}/api/posts/${slug}`, {
     cache: "no-store",
   });
 

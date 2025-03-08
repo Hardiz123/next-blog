@@ -5,7 +5,7 @@ const nextConfig = {
   },
   env: {
     // Make environment variables available to the client
-    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
+    NEXT_PUBLIC_BASE_URL: process.env.NODE_ENV === 'production' ? '' : (process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'),
     VERCEL_URL: process.env.VERCEL_URL,
   },
   async rewrites() {
